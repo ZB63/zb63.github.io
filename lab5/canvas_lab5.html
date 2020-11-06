@@ -57,6 +57,14 @@ Your browser does not support the HTML canvas tag.
         maxProgres: 600
     }
 
+    missile = {
+        exists: false,
+        x: 20,
+        y: 100, 
+        width: 20,
+        height: 50,
+    }
+
     keys = {
         up: false,
         down: false,
@@ -77,6 +85,7 @@ Your browser does not support the HTML canvas tag.
             drawBrick()
             drawWhiteLine()
             drawStripeLine()
+            drawMissile()
             drawCar()
             drawScore()
             checkColision()
@@ -162,6 +171,14 @@ Your browser does not support the HTML canvas tag.
             ctx.drawImage(plusImage, plus.x, plus.y, plus.width, plus.height)
         }
         plusImage.src = "plus.png"
+    }
+
+    function drawMissile() {
+        let missileImage = new Image(missile.width,missile.height)
+        missileImage.onload = function() {
+            ctx.drawImage(missileImage, missile.x, missile.y, missile.width, missile.height)
+        }
+        missileImage.src = "missile.png"
     }
 
     function drawScore() {
