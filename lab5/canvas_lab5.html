@@ -18,9 +18,11 @@ Your browser does not support the HTML canvas tag.
     let game = true
     let score = 0
 
+    let moveBy = 5
+
     car = {
         x: WIDTH/3,
-        y: HEIGHT - 130,
+        y: HEIGHT - 200,
         width: 60,
         height: 130
     }
@@ -224,7 +226,6 @@ Your browser does not support the HTML canvas tag.
     }
     
     function moveObjects() {
-        let moveBy = 5
 
         if(whiteLine.progres >= whiteLine.maxProgres) {
             resetWhiteLine()
@@ -269,25 +270,25 @@ Your browser does not support the HTML canvas tag.
     }
 
     function moveCar() {
-        let moveBy = 15
+        let moveCarBy = 15
         if(keys.left) { // left arrow - move left
-            if(car.x - moveBy >= WIDTH/4) {
-                car.x = car.x - moveBy
+            if(car.x - moveCarBy >= WIDTH/4) {
+                car.x = car.x - moveCarBy
             }
         } 
         if(keys.right) { // right arrow - move right
-            if(car.x + car.width + moveBy <= WIDTH - WIDTH/4) {
-                car.x = car.x + moveBy
+            if(car.x + car.width + moveCarBy <= WIDTH - WIDTH/4) {
+                car.x = car.x + moveCarBy
             }
         } 
         if(keys.up) { // up arrow - move up
-            if(car.y >= 50) {
-                car.y = car.y - moveBy
+            if(moveBy < 16) {
+                moveBy += 1
             }
         }
         if(keys.down) { // down arrow - move down
-            if(car.y <= HEIGHT - car.height) {
-                car.y = car.y + moveBy
+            if(moveBy > 2) {
+                moveBy -= 1
             }
         }
         if(keys.space && !missile.exists) {
