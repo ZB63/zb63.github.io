@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="800" height="600" style="border:1px solid #000000;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+<script>
+
+    // SEBASTIAN PAWEŁOSZEK 215844
+
+    let c = document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+    const WIDTH = 800
+    const HEIGHT = 600
+
+    let game = true
+    let score = 0
+
+    car = {
+        x: WIDTH/3,
+        y: HEIGHT - 130,
+        width: 60,
+        height: 130
+    }
+
+    whiteLine = {
+        width: 20,
+        height: 100,
+        positions: [], // {x: 0, y: 0} {x: WIDTH/2, y:0}
+        progres: 0,
+        maxProgres: 200
+    }
+
+    stripeLine = {
+        width: 20,
+        height: 100,
+        positions: [], // {x: 0, y: 0} {x: WIDTH/2, y:0}
+        progres: 0,
+        maxProgres: 100
+    }
+
+    brick = {
+        width: 50,
+        height: 50,
+        x: 0,
+        y: 0,
+        maxProgres: 600
+    }
+
+    plus = {
+        width: 50,
+        height: 50,
+        x: 0,
+        y: 0,
+        maxProgres: 600
+    }
+
+    keys = {
+        up: false,
+        down: false,
+        left: false,
+        down: false
+    }
+
+    resetWhiteLine()
+    resetStripeLine()
+    resetBrick()
+    resetPlus()
+
+    setInterval(mainLoop, 20)
+    function mainLoop() {
+        if(game) {
+            drawBackground()
+            drawPlus()
+            drawBrick()
+            drawWhiteLine()
+            drawStripeLine()
+            drawCar()
+            drawScore()
+            checkColision()
+            moveObjects()
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        let moveBy = 15
+        let key = event.which
+        if(key === 37) { // left arrow - move left
+            if(car.x - moveBy >= WIDTH/4) {
+                car.x = car.x - moveBy
+            }
+        } 
+        if(key === 39) { // right arrow - move right
+            if(car.x + car.width + moveBy <= WIDTH - WIDTH/4) {
+                car.x = car.x + moveBy
+            }
+        } 
+        if(key === 38) { // up arrow - move up
+            if(car.y >= 50) {
+                car.y = car.y - moveBy
+            }
+        }
+        if(key === 40) { // down arrow - move down
+            if(car.y <= HEIGHT - car.height) {
+                car.y = car.y + moveBy
+            }
+        }
+    })
+
+    function drawBackground() {
+        ctx.fillStyle = "green";
+        ctx.fillRect(0, 0, 800, 600);
+        ctx.fillStyle = "grey";
+        ctx.fillRect(WIDTH/4, 0, WIDTH/2, HEIGHT)
+    }
+
+    function drawCar() {
+        let carImage = new Image(car.width,car.height)
+        carImage.onload = function() {
+            ctx.drawImage(carImage, car.x, car.y, car.width, car.height)
+        }
+        carImage.src = "car.png"
+    }
+
+    function drawWhiteLine() {
+        for(let i=0;i<whiteLine.positions.length;i++) {
+            ctx.fillStyle = "white";
+            ctx.fillRect(whiteLine.positions[i].x, whiteLine.positions[i].y, whiteLine.width, whiteLine.height);
+        }
+    }
+
+    function drawStripeLine() {
+        for(let i=0; i<stripeLine.positions.length; i++) {
+            ctx.fillStyle = "white";
+            ctx.fillRect(stripeLine.positions[i].x, stripeLine.positions[i].y, stripeLine.width, stripeLine.height / 2);
+            ctx.fillStyle = "red";
+            ctx.fillRect(stripeLine.positions[i].x, stripeLine.positions[i].y + stripeLine.height / 2, stripeLine.width, stripeLine.height / 2);
+        }
+    }
+
+    function drawBrick() {
+        let brickImage = new Image(brick.width,brick.height)
+        brickImage.onload = function() {
+            ctx.drawImage(brickImage, brick.x, brick.y, brick.width, brick.height)
+        }
+        brickImage.src = "brick.png"
+    }
+
+    function drawPlus() {
+        let plusImage = new Image(plus.width,plus.height)
+        plusImage.onload = function() {
+            ctx.drawImage(plusImage, plus.x, plus.y, plus.width, plus.height)
+        }
+        plusImage.src = "plus.png"
+    }
+
+    function drawScore() {
+        ctx.fillStyle = "black";
+        ctx.font = "30px Arial";
+        ctx.fillText("Score: " + score, 20, 40);
+    }
+
+    function resetWhiteLine() {
+        whiteLine.positions = []
+        whiteLine.positions.push({x: WIDTH/2, y:-200})
+        whiteLine.positions.push({x: WIDTH/2, y:0})
+        whiteLine.positions.push({x: WIDTH/2, y:200})
+        whiteLine.positions.push({x: WIDTH/2, y:400})
+    }
+
+    function resetStripeLine() {
+        stripeLine.positions = []
+        for(let i=-2;i<8;i++) {
+            stripeLine.positions.push({x: WIDTH/4 - stripeLine.width, y:i*stripeLine.height})
+            stripeLine.positions.push({x: WIDTH - WIDTH/4, y:i*stripeLine.height})
+        }
+        
+    }
+
+    function resetBrick() {
+        brick.x = randomInRange(WIDTH/4, WIDTH - WIDTH/4 - brick.width)
+        brick.y = -brick.height
+    }
+
+    function resetPlus() {
+        plus.x = randomInRange(WIDTH/4, WIDTH - WIDTH/4 - plus.width)
+        plus.y = - plus.height*4
+    }
+    
+    function moveObjects() {
+        let moveBy = 2
+
+        if(whiteLine.progres >= whiteLine.maxProgres) {
+            resetWhiteLine()
+            whiteLine.progres = 0
+        }
+
+        for(let i=0;i<whiteLine.positions.length;i++) {
+            whiteLine.positions[i].y += moveBy
+        }
+        whiteLine.progres += moveBy
+
+
+        if(stripeLine.progres >= stripeLine.maxProgres) {
+            resetStripeLine()
+            stripeLine.progres = 0
+        }
+
+        for(let i=0;i<stripeLine.positions.length;i++) {
+            stripeLine.positions[i].y += moveBy
+        }
+        stripeLine.progres += moveBy
+
+
+        if(brick.y >= brick.maxProgres) {
+            resetBrick()
+        }
+
+        brick.y += moveBy
+
+
+        if(plus.y >= brick.maxProgres) {
+            resetPlus()
+        }
+
+        plus.y += moveBy
+    }
+
+    function checkColision() {
+        if(car.x < brick.x + brick.width && car.x + car.width > brick.x ) {
+            if(car.y < brick.y + brick.height && car.y + car.height > brick.y) {
+                game = false
+            }
+        }
+
+        if(car.x < plus.x + plus.width && car.x + car.width > plus.x ) {
+            if(car.y < plus.y + plus.height && car.y + car.height > plus.y) {
+                plus.x = 1000
+                score += 1
+            }
+        }
+    }
+    
+    function randomInRange(minInclude, maxInculde) {
+        let random = Math.random( );
+        return random * (maxInculde - minInclude) + minInclude
+    }
+
+</script>
+
+</body>
+</html>

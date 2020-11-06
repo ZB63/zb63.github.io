@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="800" height="600" style="border:1px solid #000000;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+<script>
+    let c = document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+
+    let color1 = "green"
+    let color2 = "blue"
+
+    let stop1 = 0.0
+    let stop2 = 1.0
+
+    let ballPosX = 200
+    let ballPosY = 200
+    let falling = true
+
+    let fromLeftToRight = true
+
+    draw()
+    setInterval(draw, 20);
+
+    function draw() {
+        changeColor()
+        changeBallPos()
+        window.requestAnimationFrame(drawBackground)
+        window.requestAnimationFrame(drawBall)
+    }
+
+    function changeBallPos() {
+        if(falling) {
+            ballPosY += 1
+            if(ballPosY >= 400) falling = false
+        } else {
+            ballPosY -= 1
+            if(ballPosY <= 200) {
+                falling = true
+            }
+        }
+    }
+
+    function changeColor() {
+        if(stop1 < 0.99 && fromLeftToRight) {
+            stop1 += 0.01
+        } else if(stop1 <= 0.1) {
+            fromLeftToRight = true
+        } else {
+            fromLeftToRight = false
+            stop1 -= 0.01
+        }
+    }
+
+    function drawBall() {
+        var grd = ctx.createLinearGradient(-100, 0, 300, 0);
+        grd.addColorStop(stop1, color1);
+        grd.addColorStop(stop2, color2);
+
+        ctx.beginPath();
+        ctx.arc(ballPosX, ballPosY, 100, 0, 2 * Math.PI);
+        ctx.fillStyle = grd;
+        ctx.fill();
+    }
+
+    function drawBackground() {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, 800, 600);
+    }
+
+</script>
+
+</body>
+</html>

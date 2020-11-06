@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="1024" height="768" style="border:1px solid #000000;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+<script>
+
+    // SEBASTIAN PAWEŁOSZEK 215844
+
+    let c = document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+    const WIDTH = 1024
+    const HEIGHT = 768
+
+    // Stairs
+    let stepIndex = 1
+    let xStairPos = 200
+    let yStairPos = HEIGHT
+    let stairHeight = -100
+    let stairWidth = 100
+    // ---
+
+    // Ball
+    ball = {
+        i: 0,
+        bounceResets: 0,
+        xStart: 740,
+        yStart: 225,
+        jumpDistance: -100,
+        jumpHeight: -100,
+        x: 0,
+        y: 0,
+    }
+    // ---
+
+    // After generating stairs, this function starts mainLoop()
+    drawSteps()
+
+    function mainLoop(){
+        refreshStairs()
+        animateBall()
+    }
+
+    function drawSteps() {
+        ctx.fillRect(xStairPos + (stairWidth*stepIndex), yStairPos, stairWidth, stairHeight*stepIndex);
+        if(stepIndex < 5) {
+            stepIndex += 1
+            setTimeout(drawSteps, 1000)
+        } else {
+            setInterval(mainLoop,20)
+        }
+    }
+
+    function animateBall() {
+        if(ball.i < 100) {
+            ball.x = ball.xStart + ball.i * ball.jumpDistance / 120
+            let nextPos = (ball.i*3.14)*0.01
+            let sinNextPos = Math.sin(nextPos)
+            ball.y = ball.yStart + ball.jumpHeight * sinNextPos
+            ball.i += 1
+            drawBall()
+        } else if (ball.i < 120) {
+            ball.y += 5
+            ball.x -= 1
+            ball.i += 1
+            drawBall()
+        } else if (ball.bounceResets < 4) {
+            ball.i = 0
+            ball.xStart = ball.x
+            ball.yStart = ball.y
+            ball.bounceResets += 1
+        } else {
+            drawBall()
+        }
+    }
+
+    function refreshStairs() {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, 1024, 768);
+
+        ctx.fillStyle = "black";
+        let xPos = 300
+        let yPos = HEIGHT
+        const stairWidth = 100
+
+        ctx.fillRect(xPos, yPos, stairWidth, -100);
+        xPos += 100
+        ctx.fillRect(xPos, yPos, stairWidth, -200);
+        xPos += 100
+        ctx.fillRect(xPos, yPos, stairWidth, -300);
+        xPos += 100
+        ctx.fillRect(xPos, yPos, stairWidth, -400);
+        xPos += 100
+        ctx.fillRect(xPos, yPos, stairWidth, -500);
+    }
+
+    function drawBall() {
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, 50, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
+
+</script>
+
+</body>
+</html>

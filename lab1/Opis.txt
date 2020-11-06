@@ -1,0 +1,16 @@
+1). Koło zmienia swój kolor co sekundę z zielonego na niebieski
+
+- Proste zadanie, łatwe w zrealizowaniu. Nie jestem pewien w jaki sposób prawidłowo
+  używać "window.requestAnimationFrame(variable)". Wykorzystałem "setInterval()", "window.requestAnimationFrame(variable)" wydaje się tutaj zbędne.
+
+2). Koło zmienia swój kolor co sekundę z zielonego na niebieski płynnie na zasadzie gradientu
+
+- Jak wyżej, co prawda użyłem tutaj funkcji "window.requestAnimationFrame(variable)", 
+  ale jestem prawie pewien że nie jest to jej prawidłowe zastosowanie.
+- Trudno jest stworzyć "symetryczny" gradient. Przejście z zielonego w niebieski wygląda inaczej, niż przejście
+  z niebieskiego w zielony.
+
+3). Koło zmienia swój kolor co sekundę z zielonego na niebieski płynnie na zasadzie gradientu jednocześnie płynnie odbijając się od podłoża.
+
+- Jedyna trudność polegała na dodaniu rysowania tła i modyfikacji zmiennej współrzędnej. 
+  Zadanie łatwiejsze od drugiego.

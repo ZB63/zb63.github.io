@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="1024" height="768" style="border:1px solid #000000;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+<script>
+
+    // SEBASTIAN PAWEŁOSZEK 215844
+
+    let c = document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+    const WIDTH = 1024
+    const HEIGHT = 768
+
+    const MISSILE_RADIUS = 10
+
+    let counter = 0;
+
+    ship = {
+        x: WIDTH/2,
+        y: HEIGHT - 70,
+        width: 100,
+        height: 50
+    }
+
+    targetsData = {
+        n: 0,
+        max: 5
+    }
+
+    let targets = [] // { x: 30, y: 30, r: 30}
+
+    let missiles = [] // { x: 3 , y: 3, r:10}
+
+    document.addEventListener('keydown', function(event) {
+        let key = event.which
+        if(key === 37) { // left arrow - move left
+            if(ship.x - 50 >= 0) {
+                ship.x = ship.x - 50
+            }
+        } else if(key === 39) { // right arrow - move right
+            if(ship.x + ship.width + 50 <= WIDTH) {
+                ship.x = ship.x + 50
+            }
+        } else if(key === 32) { // space - shot
+            shotMissile()
+        }
+    })
+
+    setInterval(mainLoop, 10)
+    setInterval(generateTargetPos, 2000)
+
+    function mainLoop() {
+        drawBackground()
+        drawShip()
+        drawScore()
+        drawMissiles()
+        drawTargets()
+        checkIfTargetIsHit()
+    }
+
+    function drawBackground() {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, 1024, 768);
+    }
+
+    function drawShip() {
+        ctx.fillStyle = "blue";
+        ctx.fillRect(ship.x, ship.y, ship.width, ship.height);
+    }
+
+    function shotMissile() {
+        let missile = {x:0, y:0, r:MISSILE_RADIUS}
+        missile.x = ship.x + ship.width/2
+        missile.y = ship.y + missile.r
+        missiles.push(missile)
+    }
+
+    function drawMissiles() {
+        for(let i=missiles.length-1;i>=0;i--) {
+            ctx.beginPath();
+            ctx.fillStyle = "yellow";
+            ctx.arc(missiles[i].x, missiles[i].y, missiles[i].r, 0, 2 * Math.PI);
+            ctx.fillStyle = "yellow";
+            ctx.fill();
+            missiles[i].y -= 5
+            if(missiles[i].y < 0) {
+                missiles.splice(i, 1);
+            }
+        }
+    }
+
+    function drawTargets() {
+        for(let i=0;i<targets.length;i++) {
+            ctx.fillStyle = "red";
+            ctx.beginPath();
+            ctx.arc(targets[i].x, targets[i].y, targets[i].r, 0, 2 * Math.PI);
+            ctx.fillStyle = "red";
+            ctx.fill();
+        }
+    }
+
+    function drawScore() {
+        ctx.fillStyle = "blue";
+        ctx.font = "30px Arial";
+        ctx.fillText("Score: " + counter, WIDTH/2 - 50, HEIGHT/2);
+    }
+
+    function generateTargetPos() {
+        if(targetsData.n < targetsData.max) {
+            let target = { x: 30, y: 30, r: 30}
+            target.x = randomInRange(0 + target.r, WIDTH - target.r)
+            target.y = randomInRange(0 + target.r, HEIGHT/5)
+            targets.push(target)
+            targetsData.n += 1
+        }
+    }
+
+    function checkIfTargetIsHit() {
+        for(let i=0;i<missiles.length;i++) {
+            for(let j=0;j<targets.length;j++) {
+                if(missiles[i].x - missiles[i].r < targets[j].x + targets[j].r && missiles[i].x + missiles[i].r > targets[j].x - targets[j].r) {
+                    if(missiles[i].y - missiles[i].r < targets[j].y + targets[j].r && missiles[i].y + missiles[i].r > targets[j].y - targets[j].r) {
+                        // IT WAS HIT
+                        targetsData.n -= 1
+                        targets.splice(j,1)
+                        counter += 1
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    function randomInRange(minInclude, maxInculde) {
+        let random = Math.random( );
+        return random * (maxInculde - minInclude) + minInclude
+    }
+
+</script>
+
+</body>
+</html>
