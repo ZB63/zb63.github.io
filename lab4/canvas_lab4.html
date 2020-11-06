@@ -80,32 +80,40 @@ Your browser does not support the HTML canvas tag.
             drawCar()
             drawScore()
             checkColision()
+            moveCar()
             moveObjects()
         }
     }
 
     document.addEventListener('keydown', function(event) {
-        let moveBy = 15
         let key = event.which
         if(key === 37) { // left arrow - move left
-            if(car.x - moveBy >= WIDTH/4) {
-                car.x = car.x - moveBy
-            }
+            keys.left = true
         } 
         if(key === 39) { // right arrow - move right
-            if(car.x + car.width + moveBy <= WIDTH - WIDTH/4) {
-                car.x = car.x + moveBy
-            }
+            keys.right = true
         } 
         if(key === 38) { // up arrow - move up
-            if(car.y >= 50) {
-                car.y = car.y - moveBy
-            }
+            keys.up = true
         }
         if(key === 40) { // down arrow - move down
-            if(car.y <= HEIGHT - car.height) {
-                car.y = car.y + moveBy
-            }
+            keys.down = true
+        }
+    })
+
+    document.addEventListener('keyup', function(event) {
+        let key = event.which
+        if(key === 37) { // left arrow - move left
+            keys.left = false
+        } 
+        if(key === 39) { // right arrow - move right
+            keys.right = false
+        } 
+        if(key === 38) { // up arrow - move up
+            keys.up = false
+        }
+        if(key === 40) { // down arrow - move down
+            keys.down = false
         }
     })
 
@@ -190,7 +198,7 @@ Your browser does not support the HTML canvas tag.
     }
     
     function moveObjects() {
-        let moveBy = 2
+        let moveBy = 5
 
         if(whiteLine.progres >= whiteLine.maxProgres) {
             resetWhiteLine()
@@ -226,6 +234,30 @@ Your browser does not support the HTML canvas tag.
         }
 
         plus.y += moveBy
+    }
+
+    function moveCar() {
+        let moveBy = 15
+        if(keys.left) { // left arrow - move left
+            if(car.x - moveBy >= WIDTH/4) {
+                car.x = car.x - moveBy
+            }
+        } 
+        if(keys.right) { // right arrow - move right
+            if(car.x + car.width + moveBy <= WIDTH - WIDTH/4) {
+                car.x = car.x + moveBy
+            }
+        } 
+        if(keys.up) { // up arrow - move up
+            if(car.y >= 50) {
+                car.y = car.y - moveBy
+            }
+        }
+        if(keys.down) { // down arrow - move down
+            if(car.y <= HEIGHT - car.height) {
+                car.y = car.y + moveBy
+            }
+        }
     }
 
     function checkColision() {
