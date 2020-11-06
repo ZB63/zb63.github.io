@@ -308,6 +308,21 @@ Your browser does not support the HTML canvas tag.
                 score += 1
             }
         }
+
+        if(missile.x < brick.x + brick.width && missile.x + missile.width > brick.x ) {
+            if(missile.y < brick.y + brick.height && missile.y + missile.height > brick.y) {
+                brick.x = 1000
+                missile.exists = false
+            }
+        }
+
+        if(missile.x < plus.x + plus.width && missile.x + missile.width > plus.x ) {
+            if(missile.y < plus.y + plus.height && missile.y + missile.height > plus.y) {
+                plus.x = 1000
+                missile.exists = false
+            }
+        }
+
     }
 
     function shotMissile() {
