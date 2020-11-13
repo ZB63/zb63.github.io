@@ -79,8 +79,8 @@ Your browser does not support the HTML canvas tag.
 
     curve = {
         exists: false,
-        degree: 0,
-        direction: "left"
+        degree: 0.0,
+        direction: true // true means right, false left
     }
 
     // preload images
@@ -107,10 +107,12 @@ Your browser does not support the HTML canvas tag.
         resetPlus()
 
         setInterval(mainLoop, 20)
+        setTimeout(turnPoint, 1000 * 5)
     }
 
     function mainLoop() {
         if(game) {
+            handleCurve()
             drawBackground()
             drawMissile()
             drawWhiteLine()
@@ -168,7 +170,7 @@ Your browser does not support the HTML canvas tag.
         ctx.fillRect(0, 0, 800, 600);
         startRotateMode(ROTATE)
         ctx.fillStyle = "grey";
-        ctx.fillRect(WIDTH/4, -200, WIDTH/2, HEIGHT+200)
+        ctx.fillRect(WIDTH/4, -200, WIDTH/2, HEIGHT+400)
         endRotateMode()
     }
 
@@ -198,6 +200,9 @@ Your browser does not support the HTML canvas tag.
 
     function drawBrick() {
         drawImageRot("brick.png", brick.x, brick.y, brick.width, brick.height, ROTATE)
+        // startRotateMode(ROTATE)
+        // ctx.drawImage(loadedImages["brick.png"],brick.x, brick.y, brick.width, brick.height)
+        // endRotateMode()
     }
 
     function drawPlus() {
@@ -401,6 +406,31 @@ Your browser does not support the HTML canvas tag.
 
     function endRotateMode() {
         ctx.restore();
+    }
+
+    function turnPoint() {
+        curve.exists = true
+    }
+
+    function handleCurve() {
+        if(curve.exists) {
+
+            if(curve.direction) {
+                curve.degree += 0.1
+            } else {
+                curve.degree -= 0.1
+            }
+            
+            ROTATE = curve.degree
+
+            if(Math.abs(curve.degree) > 10.0) {
+                curve.direction = !curve.direction
+            } else if(Math.abs(curve.degree) < 0.05) {
+                curve.degree = 0.0
+                curve.exists = false
+                setTimeout(turnPoint, 1000 * 5)
+            }
+        }
     }
 
 </script>
