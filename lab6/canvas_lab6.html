@@ -75,12 +75,32 @@ Your browser does not support the HTML canvas tag.
         space: false
     }
 
-    resetWhiteLine()
-    resetStripeLine()
-    resetBrick()
-    resetPlus()
+    // preload images
+    let images = ['brick.png','car.png','missile.png', 'plus.png'];
+    let loadedImages = {};
+    let promiseArray = images.map(function(imgurl){
+        let prom = new Promise(function(resolve,reject){
+            let img = new Image();
+            img.onload = function(){
+                loadedImages[imgurl] = img;
+                resolve();
+            };
+            img.src = imgurl;
+        });
+        return prom;
+    });
 
-    setInterval(mainLoop, 20)
+    Promise.all(promiseArray).then(imagesLoaded);
+
+    function imagesLoaded(){
+        resetWhiteLine()
+        resetStripeLine()
+        resetBrick()
+        resetPlus()
+
+        setInterval(mainLoop, 20)
+    }
+
     function mainLoop() {
         if(game) {
             drawBackground()
@@ -143,12 +163,13 @@ Your browser does not support the HTML canvas tag.
     }
 
     function drawCar() {
-        let carImage = new Image(car.width,car.height)
-        carImage.onload = function() {
-            ctx.rotate(45*Math.PI/180);
-            ctx.drawImage(carImage, car.x, car.y, car.width, car.height)
-        }
-        carImage.src = "car.png"
+        // let carImage = new Image(car.width,car.height)
+        // carImage.onload = function() {
+        //     ctx.drawImage(carImage, car.x, car.y, car.width, car.height)
+        // }
+        // carImage.src = "car.png"
+
+        drawImageRot("car.png",car.x,car.y,car.width,car.height, 30)
     }
 
     function drawWhiteLine() {
@@ -168,28 +189,16 @@ Your browser does not support the HTML canvas tag.
     }
 
     function drawBrick() {
-        let brickImage = new Image(brick.width,brick.height)
-        brickImage.onload = function() {
-            ctx.drawImage(brickImage, brick.x, brick.y, brick.width, brick.height)
-        }
-        brickImage.src = "brick.png"
+        ctx.drawImage(loadedImages["brick.png"], brick.x, brick.y, brick.width, brick.height)
     }
 
     function drawPlus() {
-        let plusImage = new Image(plus.width,plus.height)
-        plusImage.onload = function() {
-            ctx.drawImage(plusImage, plus.x, plus.y, plus.width, plus.height)
-        }
-        plusImage.src = "plus.png"
+        ctx.drawImage(loadedImages["plus.png"], plus.x, plus.y, plus.width, plus.height)
     }
 
     function drawMissile() {
         if(missile.exists) {
-            let missileImage = new Image(missile.width,missile.height)
-            missileImage.onload = function() {
-                ctx.drawImage(missileImage, missile.x, missile.y, missile.width, missile.height)
-            }
-            missileImage.src = "missile.png"
+            ctx.drawImage(loadedImages["missile.png"], missile.x, missile.y, missile.width, missile.height)
         }
     }
 
@@ -369,14 +378,9 @@ Your browser does not support the HTML canvas tag.
 
         ctx.rotate(rad);
 
-        let img = new Image(width,height)  
+        ctx.drawImage(loadedImages[imgName],width / 2 * (-1),height / 2 * (-1),width,height);
 
-        img.onload = function() {
-            ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height);
-            // after drawing restore canvas state as saved from above
-            ctx.restore();
-        }
-        img.src = imgName
+        ctx.restore();
     }
 
 </script>
