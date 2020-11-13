@@ -163,13 +163,7 @@ Your browser does not support the HTML canvas tag.
     }
 
     function drawCar() {
-        // let carImage = new Image(car.width,car.height)
-        // carImage.onload = function() {
-        //     ctx.drawImage(carImage, car.x, car.y, car.width, car.height)
-        // }
-        // carImage.src = "car.png"
-
-        drawImageRot("car.png",car.x,car.y,car.width,car.height, 30)
+        ctx.drawImage(loadedImages["car.png"], car.x, car.y, car.width, car.height)
     }
 
     function drawWhiteLine() {
