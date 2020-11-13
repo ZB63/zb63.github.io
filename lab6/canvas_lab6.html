@@ -22,6 +22,9 @@ Your browser does not support the HTML canvas tag.
 
     let ROTATE = 0
 
+    let leftBorder = parseFloat(WIDTH/4)
+    let rightBorder = parseFloat(WIDTH - WIDTH/4)
+
     car = {
         x: WIDTH/3,
         y: HEIGHT - 200,
@@ -200,9 +203,6 @@ Your browser does not support the HTML canvas tag.
 
     function drawBrick() {
         drawImageRot("brick.png", brick.x, brick.y, brick.width, brick.height, ROTATE)
-        // startRotateMode(ROTATE)
-        // ctx.drawImage(loadedImages["brick.png"],brick.x, brick.y, brick.width, brick.height)
-        // endRotateMode()
     }
 
     function drawPlus() {
@@ -295,12 +295,12 @@ Your browser does not support the HTML canvas tag.
     function moveCar() {
         let moveCarBy = 15
         if(keys.left) { // left arrow - move left
-            if(car.x - moveCarBy >= WIDTH/4) {
+            if(car.x - moveCarBy >= leftBorder) {
                 car.x = car.x - moveCarBy
             }
         } 
         if(keys.right) { // right arrow - move right
-            if(car.x + car.width + moveCarBy <= WIDTH - WIDTH/4) {
+            if(car.x + car.width + moveCarBy <= rightBorder) {
                 car.x = car.x + moveCarBy
             }
         } 
@@ -417,8 +417,18 @@ Your browser does not support the HTML canvas tag.
 
             if(curve.direction) {
                 curve.degree += 0.1
+                leftBorder -= 0.7
+                rightBorder -= 0.7
+                car.x -= 0.7
+                brick.x -= 0.7
+                plus.x -= 0.7
             } else {
                 curve.degree -= 0.1
+                leftBorder += 0.7
+                rightBorder += 0.7
+                car.x += 0.7
+                brick.x += 0.7
+                plus.x += 0.7
             }
             
             ROTATE = curve.degree
@@ -428,6 +438,8 @@ Your browser does not support the HTML canvas tag.
             } else if(Math.abs(curve.degree) < 0.05) {
                 curve.degree = 0.0
                 curve.exists = false
+                leftBorder = parseFloat(WIDTH/4)
+                rightBorder = parseFloat(WIDTH - WIDTH/4)
                 setTimeout(turnPoint, 1000 * 5)
             }
         }
