@@ -360,6 +360,25 @@ Your browser does not support the HTML canvas tag.
         }
     }
 
+    function drawImageRot(imgName,x,y,width,height,deg){
+        ctx.save()
+
+        var rad = deg * Math.PI / 180;
+
+        ctx.translate(x + width / 2, y + height / 2);
+
+        ctx.rotate(rad);
+
+        let img = new Image(width,height)  
+
+        img.onload = function() {
+            ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height);
+            // after drawing restore canvas state as saved from above
+            ctx.restore();
+        }
+        img.src = imgName
+    }
+
 </script>
 </br>
 <button class="button" type="button" id="leftButton" onmousedown="onLeftClickDown()" onmouseup="onLeftClickUp()" >LEFT</button>
