@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="800" height="600" style="border:1px solid #000000;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+<script>
+
+    // SEBASTIAN PAWEŁOSZEK 215844
+
+    let c = document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+    const WIDTH = 800
+    const HEIGHT = 600
+
+    let game = true
+    let score = 0
+
+    let moveBy = 5
+
+    car = {
+        x: WIDTH/3,
+        y: HEIGHT - 200,
+        width: 60,
+        height: 130
+    }
+
+    whiteLine = {
+        width: 20,
+        height: 100,
+        positions: [], // {x: 0, y: 0} {x: WIDTH/2, y:0}
+        progres: 0,
+        maxProgres: 200
+    }
+
+    stripeLine = {
+        width: 20,
+        height: 100,
+        positions: [], // {x: 0, y: 0} {x: WIDTH/2, y:0}
+        progres: 0,
+        maxProgres: 100
+    }
+
+    brick = {
+        width: 50,
+        height: 50,
+        x: 0,
+        y: 0,
+        maxProgres: 600
+    }
+
+    plus = {
+        width: 50,
+        height: 50,
+        x: 0,
+        y: 0,
+        maxProgres: 600
+    }
+
+    missile = {
+        exists: false,
+        x: 20,
+        y: 100, 
+        width: 20,
+        height: 50,
+    }
+
+    keys = {
+        up: false,
+        down: false,
+        left: false,
+        down: false,
+        space: false
+    }
+
+    resetWhiteLine()
+    resetStripeLine()
+    resetBrick()
+    resetPlus()
+
+    setInterval(mainLoop, 20)
+    function mainLoop() {
+        if(game) {
+            drawBackground()
+            drawMissile()
+            drawPlus()
+            drawBrick()
+            drawWhiteLine()
+            drawStripeLine()
+            drawCar()
+            drawScore()
+            checkColision()
+            moveCar()
+            moveObjects()
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        let key = event.which
+        if(key === 37) { // left arrow - move left
+            keys.left = true
+        } 
+        if(key === 39) { // right arrow - move right
+            keys.right = true
+        } 
+        if(key === 38) { // up arrow - move up
+            keys.up = true
+        }
+        if(key === 40) { // down arrow - move down
+            keys.down = true
+        }
+        if(key == 32) { // space - shot
+            keys.space = true
+        }
+    })
+
+    document.addEventListener('keyup', function(event) {
+        let key = event.which
+        if(key === 37) { // left arrow - move left
+            keys.left = false
+        } 
+        if(key === 39) { // right arrow - move right
+            keys.right = false
+        } 
+        if(key === 38) { // up arrow - move up
+            keys.up = false
+        }
+        if(key === 40) { // down arrow - move down
+            keys.down = false
+        }
+        if(key == 32) { // space - shot
+            keys.space = false
+        }
+    })
+
+    function drawBackground() {
+        ctx.fillStyle = "green";
+        ctx.fillRect(0, 0, 800, 600);
+        ctx.fillStyle = "grey";
+        ctx.fillRect(WIDTH/4, 0, WIDTH/2, HEIGHT)
+    }
+
+    function drawCar() {
+        let carImage = new Image(car.width,car.height)
+        carImage.onload = function() {
+            ctx.rotate(45*Math.PI/180);
+            ctx.drawImage(carImage, car.x, car.y, car.width, car.height)
+        }
+        carImage.src = "car.png"
+    }
+
+    function drawWhiteLine() {
+        for(let i=0;i<whiteLine.positions.length;i++) {
+            ctx.fillStyle = "white";
+            ctx.fillRect(whiteLine.positions[i].x, whiteLine.positions[i].y, whiteLine.width, whiteLine.height);
+        }
+    }
+
+    function drawStripeLine() {
+        for(let i=0; i<stripeLine.positions.length; i++) {
+            ctx.fillStyle = "white";
+            ctx.fillRect(stripeLine.positions[i].x, stripeLine.positions[i].y, stripeLine.width, stripeLine.height / 2);
+            ctx.fillStyle = "red";
+            ctx.fillRect(stripeLine.positions[i].x, stripeLine.positions[i].y + stripeLine.height / 2, stripeLine.width, stripeLine.height / 2);
+        }
+    }
+
+    function drawBrick() {
+        let brickImage = new Image(brick.width,brick.height)
+        brickImage.onload = function() {
+            ctx.drawImage(brickImage, brick.x, brick.y, brick.width, brick.height)
+        }
+        brickImage.src = "brick.png"
+    }
+
+    function drawPlus() {
+        let plusImage = new Image(plus.width,plus.height)
+        plusImage.onload = function() {
+            ctx.drawImage(plusImage, plus.x, plus.y, plus.width, plus.height)
+        }
+        plusImage.src = "plus.png"
+    }
+
+    function drawMissile() {
+        if(missile.exists) {
+            let missileImage = new Image(missile.width,missile.height)
+            missileImage.onload = function() {
+                ctx.drawImage(missileImage, missile.x, missile.y, missile.width, missile.height)
+            }
+            missileImage.src = "missile.png"
+        }
+    }
+
+    function drawScore() {
+        ctx.fillStyle = "black";
+        ctx.font = "30px Arial";
+        ctx.fillText("Score: " + score, 20, 40);
+    }
+
+    function resetWhiteLine() {
+        whiteLine.positions = []
+        whiteLine.positions.push({x: WIDTH/2, y:-200})
+        whiteLine.positions.push({x: WIDTH/2, y:0})
+        whiteLine.positions.push({x: WIDTH/2, y:200})
+        whiteLine.positions.push({x: WIDTH/2, y:400})
+    }
+
+    function resetStripeLine() {
+        stripeLine.positions = []
+        for(let i=-2;i<8;i++) {
+            stripeLine.positions.push({x: WIDTH/4 - stripeLine.width, y:i*stripeLine.height})
+            stripeLine.positions.push({x: WIDTH - WIDTH/4, y:i*stripeLine.height})
+        }
+        
+    }
+
+    function resetBrick() {
+        brick.x = randomInRange(WIDTH/4, WIDTH - WIDTH/4 - brick.width)
+        brick.y = -brick.height
+    }
+
+    function resetPlus() {
+        plus.x = randomInRange(WIDTH/4, WIDTH - WIDTH/4 - plus.width)
+        plus.y = - plus.height*4
+    }
+    
+    function moveObjects() {
+
+        if(whiteLine.progres >= whiteLine.maxProgres) {
+            resetWhiteLine()
+            whiteLine.progres = 0
+        }
+
+        for(let i=0;i<whiteLine.positions.length;i++) {
+            whiteLine.positions[i].y += moveBy
+        }
+        whiteLine.progres += moveBy
+
+
+        if(stripeLine.progres >= stripeLine.maxProgres) {
+            resetStripeLine()
+            stripeLine.progres = 0
+        }
+
+        for(let i=0;i<stripeLine.positions.length;i++) {
+            stripeLine.positions[i].y += moveBy
+        }
+        stripeLine.progres += moveBy
+
+
+        if(brick.y >= brick.maxProgres) {
+            resetBrick()
+        }
+
+        brick.y += moveBy
+
+
+        if(plus.y >= brick.maxProgres) {
+            resetPlus()
+        }
+
+        plus.y += moveBy
+
+        if(missile.y < -missile.height) {
+            missile.exists = false
+        } else if(missile.exists) {
+            missile.y -= moveBy * 2
+        }
+    }
+
+    function moveCar() {
+        let moveCarBy = 15
+        if(keys.left) { // left arrow - move left
+            if(car.x - moveCarBy >= WIDTH/4) {
+                car.x = car.x - moveCarBy
+            }
+        } 
+        if(keys.right) { // right arrow - move right
+            if(car.x + car.width + moveCarBy <= WIDTH - WIDTH/4) {
+                car.x = car.x + moveCarBy
+            }
+        } 
+        if(keys.up) { // up arrow - move up
+            if(moveBy < 16) {
+                moveBy += 1
+            }
+        }
+        if(keys.down) { // down arrow - move down
+            if(moveBy > 2) {
+                moveBy -= 1
+            }
+        }
+        if(keys.space && !missile.exists) {
+            shotMissile()
+        }
+    }
+
+    function checkColision() {
+        if(car.x < brick.x + brick.width && car.x + car.width > brick.x ) {
+            if(car.y < brick.y + brick.height && car.y + car.height > brick.y) {
+                game = false
+            }
+        }
+
+        if(car.x < plus.x + plus.width && car.x + car.width > plus.x ) {
+            if(car.y < plus.y + plus.height && car.y + car.height > plus.y) {
+                plus.x = 1000
+                score += 1
+            }
+        }
+
+        if(missile.x < brick.x + brick.width && missile.x + missile.width > brick.x ) {
+            if(missile.y < brick.y + brick.height && missile.y + missile.height > brick.y) {
+                brick.x = 1000
+                missile.exists = false
+            }
+        }
+
+        if(missile.x < plus.x + plus.width && missile.x + missile.width > plus.x ) {
+            if(missile.y < plus.y + plus.height && missile.y + missile.height > plus.y) {
+                plus.x = 1000
+                missile.exists = false
+            }
+        }
+
+    }
+
+    function shotMissile() {
+        missile.x = car.x + car.width/2 - missile.width/2
+        missile.y = car.y
+        missile.exists = true
+    }
+    
+    function randomInRange(minInclude, maxInculde) {
+        let random = Math.random( );
+        return random * (maxInculde - minInclude) + minInclude
+    }
+
+    function onLeftClickDown() {
+        keys.left = true
+    }
+
+    function onLeftClickUp() {
+        keys.left = false
+    }
+
+    function onRightClickDown() {
+        keys.right = true
+    }
+
+    function onRightClickUp() {
+        keys.right = false
+    }
+
+    function onShotButton() {
+        if(!missile.exists) {
+            shotMissile()
+        }
+    }
+
+</script>
+</br>
+<button class="button" type="button" id="leftButton" onmousedown="onLeftClickDown()" onmouseup="onLeftClickUp()" >LEFT</button>
+<button class="button" type="button" id="shotButton" onmousedown="onShotButton()">SHOT</button>
+<button class="button" type="button" id="rightButton" onmousedown="onRightClickDown()" onmouseup="onRightClickUp()">RIGHT</button>
+
+</body>
+<style>
+    .button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 15px 108px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    </style>
+</html>
