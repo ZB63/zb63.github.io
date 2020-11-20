@@ -131,6 +131,8 @@ Your browser does not support the HTML canvas tag.
             checkColision()
             moveCar()
             moveObjects()
+        } else {
+            showResetButton()
         }
     }
 
@@ -388,6 +390,15 @@ Your browser does not support the HTML canvas tag.
         }
     }
 
+    function onResetButton() {
+        window.location.reload(true);
+    }
+
+    function showResetButton() {
+        let button = document.getElementById("resetButton"); 
+        button.style.visibility = 'visible'
+    }
+
     function drawImageRot(imgName,x,y,width,height,deg){
         ctx.save()
 
@@ -469,6 +480,10 @@ Your browser does not support the HTML canvas tag.
     ontouchend="onRightClickUp()"
 >RIGHT</button>
 
+<br/>
+
+<button class="button2" type="button" id="resetButton" onmousedown="onResetButton()">RESET</button>
+
 </body>
 <style>
     .button {
@@ -482,6 +497,19 @@ Your browser does not support the HTML canvas tag.
       font-size: 32px;
       margin: 4px 2px;
       cursor: pointer;
+    }
+    .button2 {
+      background-color: #114dcf;
+      border: none;
+      color: white;
+      padding: 40px 328px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 32px;
+      margin: 4px 2px;
+      cursor: pointer;
+      visibility: hidden;
     }
     </style>
 </html>
