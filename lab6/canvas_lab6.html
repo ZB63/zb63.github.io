@@ -374,6 +374,8 @@ Your browser does not support the HTML canvas tag.
 
     function onRightClickDown() {
         keys.right = true
+        console.log("RIGHT CLICKED")
+        console.log(".")
     }
 
     function onRightClickUp() {
@@ -451,9 +453,21 @@ Your browser does not support the HTML canvas tag.
 
 </script>
 </br>
-<button class="button" type="button" id="leftButton" onmousedown="onLeftClickDown()" onmouseup="onLeftClickUp()" >LEFT</button>
+<button class="button" type="button" id="leftButton" 
+    onmousedown="onLeftClickDown()" 
+    onmouseup="onLeftClickUp()"
+    ontouchstart="onLeftClickDown()"
+    ontouchend="onLeftClickUp()"
+>LEFT</button>
+
 <button class="button" type="button" id="shotButton" onmousedown="onShotButton()">SHOT</button>
-<button class="button" type="button" id="rightButton" onmousedown="onRightClickDown()" onmouseup="onRightClickUp()">RIGHT</button>
+
+<button class="button" type="button" id="rightButton" 
+    onmousedown="onRightClickDown()" 
+    onmouseup="onRightClickUp()"
+    ontouchstart="onRightClickDown()"
+    ontouchend="onRightClickUp()"
+>RIGHT</button>
 
 </body>
 <style>
