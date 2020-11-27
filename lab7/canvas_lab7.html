@@ -181,7 +181,7 @@ Your browser does not support the HTML canvas tag.
 
     window.ondevicemotion = function(event) {
         let x = event.accelerationIncludingGravity.x;
-
+        ctx.fillText("moveby: " + x, 100, 200);
         if(x != null) {
             mobile.active = true
         }
