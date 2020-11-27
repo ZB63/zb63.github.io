@@ -348,14 +348,14 @@ Your browser does not support the HTML canvas tag.
             if(keys.left) { // left arrow - move left
                 if(car.x - (mobile.moveBy * moveCarBy) >= leftBorder) {
                     car.x = car.x - (mobile.moveBy * moveCarBy)
-                    ctx.fillText("MOBILE: " + (mobile.moveBy * moveCarBy), 100, 100);
+                    ctx.fillText("moveby: " + mobile.moveBy, 100, 100);
 
                 }
             } 
             if(keys.right) { // right arrow - move right
                 if(car.x + car.width + (mobile.moveBy * moveCarBy) <= rightBorder) {
                     car.x = car.x + (mobile.moveBy * moveCarBy)
-                    ctx.fillText("MOBILE: " + (mobile.moveBy * moveCarBy), 100, 200);
+                    ctx.fillText("moveby: " + mobile.moveBy, 100, 100);
                 }
             } 
         }
