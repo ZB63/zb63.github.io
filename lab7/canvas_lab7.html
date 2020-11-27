@@ -90,6 +90,11 @@ Your browser does not support the HTML canvas tag.
         direction: true // true means right, false left
     }
 
+    mobile = {
+        active = false,
+        moveBy = 0.0
+    }
+
     // preload images
     let images = ['brick.png','car.png','missile.png', 'plus.png'];
     let loadedImages = {};
@@ -176,10 +181,31 @@ Your browser does not support the HTML canvas tag.
 
     window.ondevicemotion = function(event) {
         let x = event.accelerationIncludingGravity.x;
-        let y = event.accelerationIncludingGravity.y;  
-        let z = event.accelerationIncludingGravity.z;
-        console.log("X: " + x + ", Y: " + y + ", Z: " + z) 
-        ctx.fillText("HERERE X: " + x, 100, 100);
+
+        if(x != null) {
+            mobile.active = true
+        }
+
+        if(x < 0) { // turn right
+            keys.left = false
+            keys.right = true
+            if(x < -2.0) {
+                floor = -2.0
+            }
+            mobile.moveBy = 0.5 * Math.abs(x)
+        } else if (x > 0 ) { // turn left
+            keys.left = false
+            keys.right = true
+            if(x > 2.0) {
+                floor = 2.0
+            }
+            mobile.moveBy = -0.5 * x
+        } else {
+            keys.left = false
+            keys.right = false
+        }
+        
+        ctx.fillText("X: " + x, 100, 100);
      }
 
     function drawBackground() {
