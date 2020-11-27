@@ -188,15 +188,15 @@ Your browser does not support the HTML canvas tag.
 
         if(x < 0) { // turn right
             x = Math.abs(x)
-            keys.left = true
-            keys.right = false
+            keys.left = false
+            keys.right = true
             if(x < -2.0) {
                 x = -2.0
             }
             mobile.moveBy = x/2.0
         } else if (x > 0 ) { // turn left
-            keys.left = false
-            keys.right = true
+            keys.left = true
+            keys.right = false
             if(x > 2.0) {
                 x = 2.0
             }
