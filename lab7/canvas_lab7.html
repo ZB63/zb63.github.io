@@ -181,18 +181,19 @@ Your browser does not support the HTML canvas tag.
 
     window.ondevicemotion = function(event) {
         let x = event.accelerationIncludingGravity.x;
-        ctx.fillText("moveby: " + x, 100, 200);
+        
         if(x != null) {
             mobile.active = true
         }
 
         if(x < 0) { // turn right
+            x = Math.abs(x)
             keys.left = false
             keys.right = true
             if(x < -2.0) {
                 x = -2.0
             }
-            mobile.moveBy = -x/2.0
+            mobile.moveBy = x/2.0
         } else if (x > 0 ) { // turn left
             keys.left = false
             keys.right = true
@@ -205,6 +206,7 @@ Your browser does not support the HTML canvas tag.
             keys.right = false
         }
         
+        ctx.fillText("MOVEby: " + x, 100, 200);
      }
 
     function drawBackground() {
