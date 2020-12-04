@@ -111,27 +111,53 @@ Your browser does not support the HTML canvas tag.
 
     Promise.all(promiseArray).then(imagesLoaded);
 
-    async function imagesLoaded(){
+    function imagesLoaded(){
         resetWhiteLine()
         resetStripeLine()
         resetBrick()
         resetPlus()
 
+        setInterval(mainLoop, 20)
+        setTimeout(turnPoint, 1000 * 5)
+    }
 
+    function enableDeviceOrientation() {
         if (typeof(DeviceOrientationEvent.requestPermission) === "function") {
-            const permissionState = await DeviceOrientationEvent.requestPermission();
+            DeviceOrientationEvent.requestPermission()
+            .then( permissionState => {
+                if (permissionState === "granted") { 
+                    window.ondevicemotion = function(event) {
+                        let x = event.accelerationIncludingGravity.x;
+                        
+                        if(x != null) {
+                            mobile.active = true
+                        }
 
-            if (permissionState === "granted") {
-                setInterval(mainLoop, 20)
-                setTimeout(turnPoint, 1000 * 5)   
-            } else {
-                // Permission denied
-            }
+                        if(x < 0) { // turn right
+                            x = Math.abs(x)
+                            keys.left = false
+                            keys.right = true
+                            if(x < -2.0) {
+                                x = -2.0
+                            }
+                            mobile.moveBy = x/2.0
+                        } else if (x > 0 ) { // turn left
+                            keys.left = true
+                            keys.right = false
+                            if(x > 2.0) {
+                                x = 2.0
+                            }
+                            mobile.moveBy = x/2.0
+                        } else {
+                            keys.left = false
+                            keys.right = false
+                        }
+                    }
+                }
+            }).catch(console.error)
         } else {
-            setInterval(mainLoop, 20)
-            setTimeout(turnPoint, 1000 * 5)   
+             
         }
-        
     }
 
     function mainLoop() {
@@ -187,34 +213,6 @@ Your browser does not support the HTML canvas tag.
             keys.down = false
         }
     })
-
-    window.ondevicemotion = function(event) {
-        let x = event.accelerationIncludingGravity.x;
-        
-        if(x != null) {
-            mobile.active = true
-        }
-
-        if(x < 0) { // turn right
-            x = Math.abs(x)
-            keys.left = false
-            keys.right = true
-            if(x < -2.0) {
-                x = -2.0
-            }
-            mobile.moveBy = x/2.0
-        } else if (x > 0 ) { // turn left
-            keys.left = true
-            keys.right = false
-            if(x > 2.0) {
-                x = 2.0
-            }
-            mobile.moveBy = x/2.0
-        } else {
-            keys.left = false
-            keys.right = false
-        }
-     }
 
     function drawBackground() {
         ctx.fillStyle = "green";
@@ -539,6 +537,7 @@ Your browser does not support the HTML canvas tag.
 <br/>
 
 <button class="button2" type="button" id="resetButton" onmousedown="onResetButton()">RESET</button>
+<button class="button3" type="button" id="enableButton" onmousedown="enableDeviceOrientation()">ENABLE DEVICE MOTION</button>
 
 </body>
 <style>
@@ -546,7 +545,7 @@ Your browser does not support the HTML canvas tag.
       background-color: #4CAF50;
       border: none;
       color: white;
-      padding: 80px 80px;
+      padding: 30px 80px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
@@ -566,6 +565,19 @@ Your browser does not support the HTML canvas tag.
       margin: 4px 2px;
       cursor: pointer;
       visibility: hidden;
+    }
+    .button3 {
+      background-color: #cf4d11;
+      border: none;
+      color: white;
+      padding: 40px 100px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 32px;
+      margin: 4px 2px;
+      cursor: pointer;
+      visibility: visible;
     }
     * {
         touch-action: manipulation;
