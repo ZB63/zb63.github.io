@@ -335,7 +335,7 @@ Your browser does not support the HTML canvas tag.
 
         for(let i = missile.positions.length - 1; i >= 0; i--) {
             if(missile.positions[i].y < -missile.height) {
-                missile.slice(i,i+1)
+                missile.positions.slice(i,i+1)
             } else {
                 missile.positions[i].y -= moveBy * 2
             }
@@ -434,8 +434,6 @@ Your browser does not support the HTML canvas tag.
 
     function onRightClickDown() {
         keys.right = true
-        console.log("RIGHT CLICKED")
-        console.log(".")
     }
 
     function onRightClickUp() {
