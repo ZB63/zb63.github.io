@@ -117,8 +117,15 @@ Your browser does not support the HTML canvas tag.
         resetBrick()
         resetPlus()
 
-        setInterval(mainLoop, 20)
-        setTimeout(turnPoint, 1000 * 5)
+        const permissionState = await DeviceOrientationEvent.requestPermission();
+
+        if (permissionState === "granted") {
+            setInterval(mainLoop, 20)
+            setTimeout(turnPoint, 1000 * 5)  
+        } else {
+            // Permission denied
+        }
+        
     }
 
     function mainLoop() {
