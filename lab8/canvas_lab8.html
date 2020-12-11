@@ -21,12 +21,13 @@ Your browser does not support the HTML canvas tag.
     let UNITW = WIDTH/1000
     let UNITH = HEIGHT/1000
 
+    let game = true
 
     window.addEventListener('resize', resizeCanvas, false);
 
     function resizeCanvas() {
-            c.width = window.innerWidth;
-            c.height = window.innerHeight;
+            c.width = window.innerWidth - 3;
+            c.height = window.innerHeight - 3;
             WIDTH = c.width
             HEIGHT = c.height
             UNITW = WIDTH/1000
@@ -42,48 +43,9 @@ Your browser does not support the HTML canvas tag.
 
     car = {
         x: WIDTH/3,
-        y: HEIGHT - 200,
-        width: 60,
-        height: 130
-    }
-
-    whiteLine = {
-        width: 20,
-        height: 100,
-        positions: [], // {x: 0, y: 0} {x: WIDTH/2, y:0}
-        progres: 0,
-        maxProgres: 200
-    }
-
-    stripeLine = {
-        width: 20,
-        height: 100,
-        positions: [], // {x: 0, y: 0} {x: WIDTH/2, y:0}
-        progres: 0,
-        maxProgres: 200
-    }
-
-    brick = {
-        width: 50,
-        height: 50,
-        x: 0,
-        y: 0,
-        maxProgres: 700
-    }
-
-    plus = {
-        width: 50,
-        height: 50,
-        x: 0,
-        y: 0,
-        maxProgres: 600
-    }
-
-    missile = {
-        exists: false,
-        width: 20,
-        height: 50,
-        positions: [] // {x: 20, y: 100}
+        y: HEIGHT - UNITH*330,
+        width: UNITW*100,
+        height: UNITH*100
     }
 
     keys = {
@@ -94,19 +56,13 @@ Your browser does not support the HTML canvas tag.
         space: false
     }
 
-    curve = {
-        exists: false,
-        degree: 0.0,
-        direction: true // true means right, false left
-    }
-
     mobile = {
         active: false,
         moveBy: 0.0
     }
 
     // preload images
-    let images = ['brick.png','car.png','missile.png', 'plus.png'];
+    let images = ['car.png'];
     let loadedImages = {};
     let promiseArray = images.map(function(imgurl){
         let prom = new Promise(function(resolve,reject){
@@ -123,13 +79,9 @@ Your browser does not support the HTML canvas tag.
     Promise.all(promiseArray).then(imagesLoaded);
 
     function imagesLoaded(){
-        resetWhiteLine()
-        resetStripeLine()
-        resetBrick()
-        resetPlus()
+        enableDeviceOrientation()
 
         setInterval(mainLoop, 20)
-        setTimeout(turnPoint, 1000 * 5)
     }
 
     function enableDeviceOrientation() {
@@ -200,20 +152,10 @@ Your browser does not support the HTML canvas tag.
 
     function mainLoop() {
         if(game) {
-            handleCurve()
             drawBackground()
-            drawWhiteLine()
-            drawPlus()
-            drawBrick()
-            drawStripeLine()
-            drawMissile()
-            drawCar()
-            drawScore()
-            checkColision()
-            moveCar()
-            moveObjects()
+            //moveCar()
         } else {
-            showResetButton()
+            
         }
     }
 
@@ -232,7 +174,7 @@ Your browser does not support the HTML canvas tag.
             keys.down = true
         }
         if(key == 32) { // space - shot
-            shotMissile()
+            //shotMissile()
         }
     })
 
@@ -254,130 +196,14 @@ Your browser does not support the HTML canvas tag.
 
     function drawBackground() {
         ctx.fillStyle = "green";
-        ctx.fillRect(0, 0, 800, 600);
-        startRotateMode(ROTATE)
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
         ctx.fillStyle = "grey";
-        ctx.fillRect(WIDTH/4, -200, WIDTH/2, HEIGHT+400)
-        endRotateMode()
+        //ctx.fillRect(WIDTH/4, -200, WIDTH/2, HEIGHT+400)
+        //endRotateMode()
     }
 
     function drawCar() {
         drawImageRot("car.png", car.x, car.y, car.width, car.height, ROTATE)
-    }
-
-    function drawWhiteLine() {
-        startRotateMode(ROTATE)
-        for(let i=0;i<whiteLine.positions.length;i++) {
-            ctx.fillStyle = "white";
-            ctx.fillRect(whiteLine.positions[i].x, whiteLine.positions[i].y, whiteLine.width, whiteLine.height);
-        }
-        endRotateMode()
-    }
-
-    function drawStripeLine() {
-        startRotateMode(ROTATE)
-        for(let i=0; i<stripeLine.positions.length; i++) {
-            ctx.fillStyle = "white";
-            ctx.fillRect(stripeLine.positions[i].x, stripeLine.positions[i].y, stripeLine.width, stripeLine.height / 2);
-            ctx.fillStyle = "red";
-            ctx.fillRect(stripeLine.positions[i].x, stripeLine.positions[i].y + stripeLine.height / 2, stripeLine.width, stripeLine.height / 2);
-        }
-        endRotateMode()
-    }
-
-    function drawBrick() {
-        drawImageRot("brick.png", brick.x, brick.y, brick.width, brick.height, ROTATE)
-    }
-
-    function drawPlus() {
-        drawImageRot("plus.png", plus.x, plus.y, plus.width, plus.height, ROTATE)
-    }
-
-    function drawMissile() {
-        for(let i=0;i<missile.positions.length;i++) {
-            drawImageRot("missile.png",  missile.positions[i].x, missile.positions[i].y, missile.width, missile.height, ROTATE)
-        }
-    }
-
-    function drawScore() {
-        ctx.fillStyle = "black";
-        ctx.font = "30px Arial";
-        ctx.fillText("Score: " + score, 20, 40);
-    }
-
-    function resetWhiteLine() {
-        whiteLine.positions = []
-        whiteLine.positions.push({x: WIDTH/2, y:-200})
-        whiteLine.positions.push({x: WIDTH/2, y:0})
-        whiteLine.positions.push({x: WIDTH/2, y:200})
-        whiteLine.positions.push({x: WIDTH/2, y:400})
-    }
-
-    function resetStripeLine() {
-        stripeLine.positions = []
-        for(let i=-3;i<7;i++) {
-            stripeLine.positions.push({x: WIDTH/4 - stripeLine.width, y:i*stripeLine.height})
-            stripeLine.positions.push({x: WIDTH - WIDTH/4, y:i*stripeLine.height})
-        }
-        
-    }
-
-    function resetBrick() {
-        brick.x = randomInRange(WIDTH/4, WIDTH - WIDTH/4 - brick.width)
-        brick.y = -brick.height
-    }
-
-    function resetPlus() {
-        plus.x = randomInRange(WIDTH/4, WIDTH - WIDTH/4 - plus.width)
-        plus.y = - plus.height*4
-    }
-    
-    function moveObjects() {
-
-        if(whiteLine.progres >= whiteLine.maxProgres) {
-            resetWhiteLine()
-            whiteLine.progres = 0
-        }
-
-        for(let i=0;i<whiteLine.positions.length;i++) {
-            whiteLine.positions[i].y += moveBy
-        }
-        whiteLine.progres += moveBy
-
-
-        if(stripeLine.progres >= stripeLine.maxProgres) {
-            resetStripeLine()
-            stripeLine.progres = 0
-        }
-
-        for(let i=0;i<stripeLine.positions.length;i++) {
-            stripeLine.positions[i].y += moveBy
-        }
-        stripeLine.progres += moveBy
-
-
-        if(brick.y >= brick.maxProgres) {
-            resetBrick()
-        }
-
-        brick.y += moveBy
-
-
-        if(plus.y >= brick.maxProgres) {
-            resetPlus()
-        }
-
-        plus.y += moveBy
-
-        for(let i = missile.positions.length - 1; i >= 0; i--) {
-            if(missile.positions[i].y < -missile.height) {
-                missile.positions.slice(i,i+1)
-            } else {
-                missile.positions[i].y -= moveBy * 2
-            }
-        }
-
-        
     }
 
     function moveCar() {
@@ -418,207 +244,24 @@ Your browser does not support the HTML canvas tag.
             }
         }
     }
-
-    function checkColision() {
-        if(car.x < brick.x + brick.width && car.x + car.width > brick.x ) {
-            if(car.y < brick.y + brick.height && car.y + car.height > brick.y) {
-                game = false
-            }
-        }
-
-        if(car.x < plus.x + plus.width && car.x + car.width > plus.x ) {
-            if(car.y < plus.y + plus.height && car.y + car.height > plus.y) {
-                plus.x = 1000
-                score += 1
-            }
-        }
-
-        
-        for(let i=0;i<missile.positions.length;i++) {
-            if(missile.positions[i].x < brick.x + brick.width && missile.positions[i].x + missile.width > brick.x ) {
-                if(missile.positions[i].y < brick.y + brick.height && missile.positions[i].y + missile.height > brick.y) {
-                    brick.x = 1000
-                }
-            }
-
-            if(missile.positions[i].x < plus.x + plus.width && missile.positions[i].x + missile.width > plus.x ) {
-                if(missile.positions[i].y < plus.y + plus.height && missile.positions[i].y + missile.height > plus.y) {
-                    plus.x = 1000
-                }
-            }
-        }
-        
-
-    }
-
-    function shotMissile() {
-        missile.positions.push({x: car.x + car.width/2 - missile.width/2, y: car.y})
-    }
     
     function randomInRange(minInclude, maxInculde) {
         let random = Math.random( );
         return random * (maxInculde - minInclude) + minInclude
     }
 
-    function onLeftClickDown() {
-        keys.left = true
-    }
-
-    function onLeftClickUp() {
-        keys.left = false
-    }
-
-    function onRightClickDown() {
-        keys.right = true
-    }
-
-    function onRightClickUp() {
-        keys.right = false
-    }
-
-    function onShotButton() {
-        if(!missile.exists) {
-            shotMissile()
-        }
-    }
-
-    function onResetButton() {
-        window.location.reload(true);
-    }
-
-    function showResetButton() {
-        let button = document.getElementById("resetButton"); 
-        button.style.visibility = 'visible'
-    }
-
-    function drawImageRot(imgName,x,y,width,height,deg){
-        ctx.save()
-
-        var rad = deg * Math.PI / 180;
-
-        ctx.translate(x + width / 2, y + height / 2);
-
-        ctx.rotate(rad);
-
-        ctx.drawImage(loadedImages[imgName],width / 2 * (-1),height / 2 * (-1),width,height);
-
-        ctx.restore();
-    }
-
-    function startRotateMode(degree) {
-        ctx.save()
-
-        var rad = degree * Math.PI / 180;
-
-        ctx.rotate(rad);
-    }
-
-    function endRotateMode() {
-        ctx.restore();
-    }
-
-    function turnPoint() {
-        curve.exists = true
-    }
-
-    function handleCurve() {
-        if(curve.exists) {
-
-            if(curve.direction) {
-                curve.degree += 0.1
-                leftBorder -= 0.7
-                rightBorder -= 0.7
-                car.x -= 0.7
-                brick.x -= 0.7
-                plus.x -= 0.7
-            } else {
-                curve.degree -= 0.1
-                leftBorder += 0.7
-                rightBorder += 0.7
-                car.x += 0.7
-                brick.x += 0.7
-                plus.x += 0.7
-            }
-            
-            ROTATE = curve.degree
-
-            if(Math.abs(curve.degree) > 10.0) {
-                curve.direction = !curve.direction
-            } else if(Math.abs(curve.degree) < 0.05) {
-                curve.degree = 0.0
-                curve.exists = false
-                leftBorder = parseFloat(WIDTH/4)
-                rightBorder = parseFloat(WIDTH - WIDTH/4)
-                setTimeout(turnPoint, 1000 * 5)
-            }
-        }
-    }
-
 </script>
-</br>
-<button class="button" type="button" id="leftButton" 
-    onmousedown="onLeftClickDown()" 
-    onmouseup="onLeftClickUp()"
-    ontouchstart="onLeftClickDown()"
-    ontouchend="onLeftClickUp()"
->LEFT</button>
-
-<button class="button" type="button" id="shotButton" onmousedown="onShotButton()">SHOT</button>
-
-<button class="button" type="button" id="rightButton" 
-    onmousedown="onRightClickDown()" 
-    onmouseup="onRightClickUp()"
-    ontouchstart="onRightClickDown()"
-    ontouchend="onRightClickUp()"
->RIGHT</button>
-
-<br/>
-
-<button class="button2" type="button" id="resetButton" onmousedown="onResetButton()">RESET</button>
-<button class="button3" type="button" id="enableButton" onmousedown="enableDeviceOrientation()">ENABLE DEVICE MOTION</button>
 
 </body>
 <style>
-    .button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 30px 80px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 32px;
-      margin: 4px 2px;
-      cursor: pointer;
-    }
-    .button2 {
-      background-color: #114dcf;
-      border: none;
-      color: white;
-      padding: 40px 328px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 32px;
-      margin: 4px 2px;
-      cursor: pointer;
-      visibility: hidden;
-    }
-    .button3 {
-      background-color: #cf4d11;
-      border: none;
-      color: white;
-      padding: 40px 100px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 32px;
-      margin: 4px 2px;
-      cursor: pointer;
-      visibility: visible;
-    }
     * {
         touch-action: manipulation;
+        margin:0; 
+        padding:0;
     }
+    canvas {
+        display:block;
+    }
+    html, body { width:100%; height:100%; }
     </style>
 </html>
