@@ -21,6 +21,11 @@ Your browser does not support the HTML canvas tag.
     let UNITW = WIDTH/1000
     let UNITH = HEIGHT/1000
 
+    let leftBorder = 0
+    let rightBorder = WIDTH
+    let topBorder = 0
+    let bottomBorder = HEIGHT
+
     let game = true
 
     board = {
@@ -52,6 +57,8 @@ Your browser does not support the HTML canvas tag.
             HEIGHT = c.height
             UNITW = WIDTH/1000.0
             UNITH = HEIGHT/1000.0
+            rightBorder = WIDTH
+            bottomBorder = HEIGHT
             
             updateBoard()
 
@@ -82,6 +89,8 @@ Your browser does not support the HTML canvas tag.
 
     function mainLoop() {
         if(game) {
+            moveBoard()
+
             drawBackground()
             drawBoard()
         } else {
@@ -108,6 +117,34 @@ Your browser does not support the HTML canvas tag.
         board.height = UNITH*50
     }
 
+    function moveBoard() {
+        let moveBoardBy = UNITW * 37
+        if(!mobile.active) {
+            if(keys.left) { // left arrow - move left
+                if(board.x - moveBoardBy >= leftBorder) {
+                    board.x = board.x - moveBoardBy
+                }
+            } 
+            if(keys.right) { // right arrow - move right
+                if(board.x + board.width <= rightBorder) {
+                    board.x = board.x + moveBoardBy
+                }
+            } 
+        } else {
+            if(keys.left) { // left arrow - move left
+                if(board.x - (mobile.moveBy * moveBoardBy) >= leftBorder) {
+                    board.x = board.x - (mobile.moveBy * moveBoardBy)
+
+                }
+            } 
+            if(keys.right) { // right arrow - move right
+                if(board.x + board.width + (mobile.moveBy * moveBoardBy) <= rightBorder) {
+                    board.x = board.x + (mobile.moveBy * moveBoardBy)
+                }
+            } 
+        }
+    }
+
     function enableDeviceOrientation() {
         if (typeof(DeviceOrientationEvent.requestPermission) === "function") {
             DeviceOrientationEvent.requestPermission()
@@ -128,14 +165,14 @@ Your browser does not support the HTML canvas tag.
                             if(x < -2.0) {
                                 x = -2.0
                             }
-                            mobile.moveBy = x/2.0
+                            mobile.moveBy = x/2.0 * UNITW
                         } else if (x > 0 ) { // turn left
                             keys.left = true
                             keys.right = false
                             if(x > 2.0) {
                                 x = 2.0
                             }
-                            mobile.moveBy = x/2.0
+                            mobile.moveBy = x/2.0 * UNITW
                         } else {
                             keys.left = false
                             keys.right = false
