@@ -54,6 +54,12 @@ Your browser does not support the HTML canvas tag.
         yDirection: -1, // 1 = down, -1 = up
     }
 
+    brick = {
+        position: [], // {x: 0, y: 0}
+        width: UNITH* 80,
+        height: UNITH* 50,
+    }
+
     mobile = {
         active: false,
         moveBy: 0.0
@@ -77,7 +83,7 @@ Your browser does not support the HTML canvas tag.
     resizeCanvas();
 
     // preload images
-    let images = ['board.png', 'ball.png'];
+    let images = ['board.png', 'ball.png', 'brick.png'];
     let loadedImages = {};
     let promiseArray = images.map(function(imgurl){
         let prom = new Promise(function(resolve,reject){
@@ -95,6 +101,7 @@ Your browser does not support the HTML canvas tag.
 
     function imagesLoaded(){
         enableDeviceOrientation()
+        addBricks()
         setInterval(mainLoop, 20)
     }
 
@@ -107,6 +114,7 @@ Your browser does not support the HTML canvas tag.
 
             drawBackground()
             drawBoard()
+            drawBrick()
             drawBall()
         } else {
             
@@ -135,6 +143,20 @@ Your browser does not support the HTML canvas tag.
         board.width = UNITW*300
         board.height = UNITH*50
         HEIGHT - UNITH*100
+    }
+
+    function addBricks() {
+        for(let i=0;i<5;i++) {
+            for(let j=0;j<10;j++) {
+                brick.position.push({x: brick.width * j * 2 + UNITW*100, y: brick.height*i*2 + UNITH * 100})
+            }
+        }
+    }
+
+    function drawBrick() {
+        for(let i=0; i<brick.position.length;i++) {
+            ctx.drawImage(loadedImages["brick.png"],brick.position[i].x,brick.position[i].y,brick.width,brick.height);
+        }
     }
 
     function moveBoard() {
