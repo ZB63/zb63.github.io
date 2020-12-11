@@ -23,25 +23,7 @@ Your browser does not support the HTML canvas tag.
 
     let game = true
 
-    window.addEventListener('resize', resizeCanvas, false);
-
-    function resizeCanvas() {
-            c.width = window.innerWidth - 3;
-            c.height = window.innerHeight - 3;
-            WIDTH = c.width
-            HEIGHT = c.height
-            UNITW = WIDTH/1000
-            UNITH = HEIGHT/1000
-
-            /**
-             * Your drawings need to be inside this function otherwise they will be reset when 
-             * you resize the browser window and the canvas goes will be cleared.
-             */
-            //drawStuff(); 
-    }
-    resizeCanvas();
-
-    car = {
+    board = {
         x: WIDTH/3,
         y: HEIGHT - UNITH*330,
         width: UNITW*100,
@@ -61,8 +43,37 @@ Your browser does not support the HTML canvas tag.
         moveBy: 0.0
     }
 
+    window.addEventListener('resize', resizeCanvas, false);
+
+    function resizeCanvas() {
+            c.width = window.innerWidth - 3;
+            c.height = window.innerHeight - 3;
+            WIDTH = c.width
+            HEIGHT = c.height
+            UNITW = WIDTH/1000
+            UNITH = HEIGHT/1000
+
+            refreshBoard()
+
+            /**
+             * Your drawings need to be inside this function otherwise they will be reset when 
+             * you resize the browser window and the canvas goes will be cleared.
+             */
+            //drawStuff(); 
+    }
+    resizeCanvas();
+
+    
+
+    function refreshBoard() {
+        board.x = WIDTH/3
+        board.y =  HEIGHT - UNITH*330
+        board.width = UNITW*100
+        board.height = UNITH*100
+    }
+
     // preload images
-    let images = ['car.png'];
+    let images = ['board.png'];
     let loadedImages = {};
     let promiseArray = images.map(function(imgurl){
         let prom = new Promise(function(resolve,reject){
@@ -80,8 +91,40 @@ Your browser does not support the HTML canvas tag.
 
     function imagesLoaded(){
         enableDeviceOrientation()
-
         setInterval(mainLoop, 20)
+    }
+
+    function mainLoop() {
+        if(game) {
+            drawBackground()
+            drawBoard()
+        } else {
+            
+        }
+    }
+
+    function drawBackground() {
+        ctx.fillStyle = "green";
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+        ctx.fillStyle = "grey";
+        //ctx.fillRect(WIDTH/4, -200, WIDTH/2, HEIGHT+400)
+        //endRotateMode()
+    }
+
+    function drawBoard() {
+        ctx.drawImage(loadedImages["board.png"],board.x,board.y,board.width,board.height);
+    }
+    
+    function randomInRange(minInclude, maxInculde) {
+        let random = Math.random( );
+        return random * (maxInculde - minInclude) + minInclude
+    }
+
+    function refreshBoard() {
+        board.x = WIDTH/3
+        board.y =  HEIGHT - UNITH*330
+        board.width = UNITW*100
+        board.height = UNITH*100
     }
 
     function enableDeviceOrientation() {
@@ -150,15 +193,6 @@ Your browser does not support the HTML canvas tag.
         }
     }
 
-    function mainLoop() {
-        if(game) {
-            drawBackground()
-            //moveCar()
-        } else {
-            
-        }
-    }
-
     document.addEventListener('keydown', function(event) {
         let key = event.which
         if(key === 37) { // left arrow - move left
@@ -193,62 +227,6 @@ Your browser does not support the HTML canvas tag.
             keys.down = false
         }
     })
-
-    function drawBackground() {
-        ctx.fillStyle = "green";
-        ctx.fillRect(0, 0, WIDTH, HEIGHT);
-        ctx.fillStyle = "grey";
-        //ctx.fillRect(WIDTH/4, -200, WIDTH/2, HEIGHT+400)
-        //endRotateMode()
-    }
-
-    function drawCar() {
-        drawImageRot("car.png", car.x, car.y, car.width, car.height, ROTATE)
-    }
-
-    function moveCar() {
-        let moveCarBy = 15
-        if(!mobile.active) {
-            if(keys.left) { // left arrow - move left
-                if(car.x - moveCarBy >= leftBorder) {
-                    car.x = car.x - moveCarBy
-                }
-            } 
-            if(keys.right) { // right arrow - move right
-                if(car.x + car.width + moveCarBy <= rightBorder) {
-                    car.x = car.x + moveCarBy
-                }
-            } 
-        } else {
-            if(keys.left) { // left arrow - move left
-                if(car.x - (mobile.moveBy * moveCarBy) >= leftBorder) {
-                    car.x = car.x - (mobile.moveBy * moveCarBy)
-
-                }
-            } 
-            if(keys.right) { // right arrow - move right
-                if(car.x + car.width + (mobile.moveBy * moveCarBy) <= rightBorder) {
-                    car.x = car.x + (mobile.moveBy * moveCarBy)
-                }
-            } 
-        }
-        
-        if(keys.up) { // up arrow - move up
-            if(moveBy < 16) {
-                moveBy += 1
-            }
-        }
-        if(keys.down) { // down arrow - move down
-            if(moveBy > 2) {
-                moveBy -= 1
-            }
-        }
-    }
-    
-    function randomInRange(minInclude, maxInculde) {
-        let random = Math.random( );
-        return random * (maxInculde - minInclude) + minInclude
-    }
 
 </script>
 
