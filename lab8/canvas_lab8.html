@@ -32,7 +32,7 @@ Your browser does not support the HTML canvas tag.
         width: WIDTH/3,
         height: 0,
         x: WIDTH/3,
-        y:  HEIGHT - UNITH*100
+        y: HEIGHT - UNITH*100
     }
 
     keys = {
@@ -41,6 +41,17 @@ Your browser does not support the HTML canvas tag.
         left: false,
         down: false,
         space: false
+    }
+
+    ball = {
+        x: WIDTH/3 + UNITW*50,
+        y: HEIGHT - UNITH*200,
+        width: UNITH* 100,
+        height: UNITH* 100,
+        xMultiplier: 0.5,
+        yMultiplier: 0.5,
+        xDirection: 1, // 1 = right, -1 = left
+        yDirection: -1, // 1 = down, -1 = up
     }
 
     mobile = {
@@ -66,7 +77,7 @@ Your browser does not support the HTML canvas tag.
     resizeCanvas();
 
     // preload images
-    let images = ['board.png'];
+    let images = ['board.png', 'ball.png'];
     let loadedImages = {};
     let promiseArray = images.map(function(imgurl){
         let prom = new Promise(function(resolve,reject){
@@ -90,9 +101,13 @@ Your browser does not support the HTML canvas tag.
     function mainLoop() {
         if(game) {
             moveBoard()
+            moveBall()
+
+            checkColission()
 
             drawBackground()
             drawBoard()
+            drawBall()
         } else {
             
         }
@@ -106,6 +121,10 @@ Your browser does not support the HTML canvas tag.
     function drawBoard() {
         ctx.drawImage(loadedImages["board.png"],board.x,board.y,board.width,board.height);
     }
+
+    function drawBall() {
+        ctx.drawImage(loadedImages["ball.png"],ball.x,ball.y,ball.width,ball.height);
+    }
     
     function randomInRange(minInclude, maxInculde) {
         let random = Math.random( );
@@ -115,6 +134,7 @@ Your browser does not support the HTML canvas tag.
     function updateBoard() {
         board.width = UNITW*300
         board.height = UNITH*50
+        HEIGHT - UNITH*100
     }
 
     function moveBoard() {
@@ -145,6 +165,36 @@ Your browser does not support the HTML canvas tag.
         }
     }
 
+    function moveBall() {
+        let moveBallBy = UNITW * 3
+        ball.x += moveBallBy * ball.xDirection * ball.xMultiplier;
+        ball.y += moveBallBy * ball.yDirection * ball.yMultiplier;
+    }
+
+    function checkColission() {
+        //ball colission with wall
+        if(ball.x < leftBorder) {
+            ball.xDirection = 1
+            ball.xMultiplier = Math.random()
+            ball.yMultiplier = 1.0 - ball.xMultiplier
+        } 
+        if(ball.x + ball.width > rightBorder) {
+            ball.xDirection = -1
+            ball.xMultiplier = Math.random()
+            ball.yMultiplier = 1.0 - ball.xMultiplier
+        }
+        if(ball.y < 0) {
+            ball.yDirection = 1
+            ball.xMultiplier = Math.random()
+            ball.yMultiplier = 1.0 - ball.xMultiplier
+        }
+        if(ball.y + ball.height > bottomBorder) {
+            game = false
+        }
+
+        // ball
+    }
+
     function enableDeviceOrientation() {
         if (typeof(DeviceOrientationEvent.requestPermission) === "function") {
             DeviceOrientationEvent.requestPermission()
@@ -165,14 +215,14 @@ Your browser does not support the HTML canvas tag.
                             if(x < -2.0) {
                                 x = -2.0
                             }
-                            mobile.moveBy = x/2.0 * UNITW
+                            mobile.moveBy = -x/2.0 * UNITW
                         } else if (x > 0 ) { // turn left
                             keys.left = true
                             keys.right = false
                             if(x > 2.0) {
                                 x = 2.0
                             }
-                            mobile.moveBy = x/2.0 * UNITW
+                            mobile.moveBy = -x/2.0 * UNITW
                         } else {
                             keys.left = false
                             keys.right = false
