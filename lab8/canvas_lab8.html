@@ -16,18 +16,29 @@ Your browser does not support the HTML canvas tag.
 
     let c = document.getElementById("myCanvas");
     let ctx = c.getContext("2d");
-    const WIDTH = 800
-    const HEIGHT = 600
+    let WIDTH = c.width
+    let HEIGHT = c.height
+    let UNITW = WIDTH/1000
+    let UNITH = HEIGHT/1000
 
-    let game = true
-    let score = 0
 
-    let moveBy = 5
+    window.addEventListener('resize', resizeCanvas, false);
 
-    let ROTATE = 0
+    function resizeCanvas() {
+            c.width = window.innerWidth;
+            c.height = window.innerHeight;
+            WIDTH = c.width
+            HEIGHT = c.height
+            UNITW = WIDTH/1000
+            UNITH = HEIGHT/1000
 
-    let leftBorder = parseFloat(WIDTH/4)
-    let rightBorder = parseFloat(WIDTH - WIDTH/4)
+            /**
+             * Your drawings need to be inside this function otherwise they will be reset when 
+             * you resize the browser window and the canvas goes will be cleared.
+             */
+            //drawStuff(); 
+    }
+    resizeCanvas();
 
     car = {
         x: WIDTH/3,
