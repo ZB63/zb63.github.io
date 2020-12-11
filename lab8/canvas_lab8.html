@@ -56,8 +56,8 @@ Your browser does not support the HTML canvas tag.
 
     brick = {
         position: [], // {x: 0, y: 0}
-        width: UNITH* 80,
-        height: UNITH* 50,
+        width: UNITW * 80,
+        height: UNITH * 50,
     }
 
     mobile = {
@@ -148,7 +148,7 @@ Your browser does not support the HTML canvas tag.
     function addBricks() {
         for(let i=0;i<5;i++) {
             for(let j=0;j<10;j++) {
-                brick.position.push({x: brick.width * j * 2 + UNITW*100, y: brick.height*i*2 + UNITH * 100})
+                brick.position.push({x: brick.width * j + UNITW*10, y: brick.height*i + UNITH*10})
             }
         }
     }
