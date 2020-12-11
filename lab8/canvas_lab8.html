@@ -16,18 +16,18 @@ Your browser does not support the HTML canvas tag.
 
     let c = document.getElementById("myCanvas");
     let ctx = c.getContext("2d");
-    let WIDTH = c.width
-    let HEIGHT = c.height
+    let WIDTH = window.innerWidth - 3
+    let HEIGHT = window.innerHeight - 3;
     let UNITW = WIDTH/1000
     let UNITH = HEIGHT/1000
 
     let game = true
 
     board = {
+        width: WIDTH/3,
+        height: 0,
         x: WIDTH/3,
-        y: HEIGHT - UNITH*330,
-        width: UNITW*100,
-        height: UNITH*100
+        y:  HEIGHT - UNITH*100
     }
 
     keys = {
@@ -50,27 +50,13 @@ Your browser does not support the HTML canvas tag.
             c.height = window.innerHeight - 3;
             WIDTH = c.width
             HEIGHT = c.height
-            UNITW = WIDTH/1000
-            UNITH = HEIGHT/1000
+            UNITW = WIDTH/1000.0
+            UNITH = HEIGHT/1000.0
+            
+            updateBoard()
 
-            refreshBoard()
-
-            /**
-             * Your drawings need to be inside this function otherwise they will be reset when 
-             * you resize the browser window and the canvas goes will be cleared.
-             */
-            //drawStuff(); 
     }
     resizeCanvas();
-
-    
-
-    function refreshBoard() {
-        board.x = WIDTH/3
-        board.y =  HEIGHT - UNITH*330
-        board.width = UNITW*100
-        board.height = UNITH*100
-    }
 
     // preload images
     let images = ['board.png'];
@@ -104,11 +90,8 @@ Your browser does not support the HTML canvas tag.
     }
 
     function drawBackground() {
-        ctx.fillStyle = "green";
+        ctx.fillStyle = "black";
         ctx.fillRect(0, 0, WIDTH, HEIGHT);
-        ctx.fillStyle = "grey";
-        //ctx.fillRect(WIDTH/4, -200, WIDTH/2, HEIGHT+400)
-        //endRotateMode()
     }
 
     function drawBoard() {
@@ -120,11 +103,9 @@ Your browser does not support the HTML canvas tag.
         return random * (maxInculde - minInclude) + minInclude
     }
 
-    function refreshBoard() {
-        board.x = WIDTH/3
-        board.y =  HEIGHT - UNITH*330
-        board.width = UNITW*100
-        board.height = UNITH*100
+    function updateBoard() {
+        board.width = UNITW*300
+        board.height = UNITH*50
     }
 
     function enableDeviceOrientation() {
