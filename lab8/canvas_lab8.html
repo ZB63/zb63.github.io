@@ -224,6 +224,17 @@ Your browser does not support the HTML canvas tag.
                 ball.yMultiplier = 1.0 - ball.xMultiplier
             }
         }
+
+        // ball colission with bricks
+
+        for(let i = brick.position.length - 1; i>=0; i--) {
+            if((brick.position[i].x > board.x && brick.position[i].x < board.x + board.width) 
+            && (brick.position[i].x + brick.width < board.x + board.width && brick.position[i].x + brick.width > board.x) ) {
+                if( (ball.y > brick.position[i].y - brick.width) && (ball.y < brick.position[i].y) ) {
+                    brick.position.splice(i,1)
+                }
+            }
+        }
     }
 
     function enableDeviceOrientation() {
