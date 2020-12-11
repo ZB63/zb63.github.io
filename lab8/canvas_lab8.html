@@ -166,7 +166,7 @@ Your browser does not support the HTML canvas tag.
     }
 
     function moveBall() {
-        let moveBallBy = UNITW * 3
+        let moveBallBy = UNITW * 10
         ball.x += moveBallBy * ball.xDirection * ball.xMultiplier;
         ball.y += moveBallBy * ball.yDirection * ball.yMultiplier;
     }
@@ -192,7 +192,16 @@ Your browser does not support the HTML canvas tag.
             game = false
         }
 
-        // ball
+        // ball colission with board
+
+        if((ball.x > board.x && ball.x < board.x + board.width) || (ball.x + ball.width < board.x + board.width && ball.x + ball.width > board.x) ) {
+            if(ball.y + ball.height > board.y) {
+                ball.yDirection = -1
+                ball.xDirection = ball.xDirection * -1
+                ball.xMultiplier = Math.random()
+                ball.yMultiplier = 1.0 - ball.xMultiplier
+            }
+        }
     }
 
     function enableDeviceOrientation() {
