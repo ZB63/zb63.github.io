@@ -253,16 +253,12 @@ Your browser does not support the HTML canvas tag.
                             x = Math.abs(x)
                             keys.left = false
                             keys.right = true
-                            if(x < -5.0) {
-                                x = -5.0
-                            }
+                            
                             mobile.moveBy = x/9.0 * UNITW
                         } else if (x > 0 ) { // turn left
                             keys.left = true
                             keys.right = false
-                            if(x > 5.0) {
-                                x = 5.0
-                            }
+                            
                             mobile.moveBy = x/9.0 * UNITW
                         } else {
                             keys.left = false
