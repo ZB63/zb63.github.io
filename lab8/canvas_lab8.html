@@ -52,6 +52,8 @@ Your browser does not support the HTML canvas tag.
         height: UNITH* 100,
         xMultiplier: 0.5,
         yMultiplier: 0.5,
+        xPreviousMultiplier: 0.5,
+        yPreviousMultiplier: 0.5,
         xDirection: 1, // 1 = right, -1 = left
         yDirection: -1, // 1 = down, -1 = up
     }
@@ -213,7 +215,7 @@ Your browser does not support the HTML canvas tag.
     }
 
     function moveBall() {
-        let moveBallBy = UNITW * 10
+        let moveBallBy = UNITW * 15
         ball.x += moveBallBy * ball.xDirection * ball.xMultiplier;
         ball.y += moveBallBy * ball.yDirection * ball.yMultiplier;
     }
@@ -222,18 +224,18 @@ Your browser does not support the HTML canvas tag.
         //ball colission with wall
         if(ball.x < leftBorder) {
             ball.xDirection = 1
-            ball.xMultiplier = Math.random()
-            ball.yMultiplier = 1.0 - ball.xMultiplier
+            //ball.xMultiplier = Math.random()
+            //ball.yMultiplier = 1.0 - ball.xMultiplier
         } 
         if(ball.x + ball.width > rightBorder) {
             ball.xDirection = -1
-            ball.xMultiplier = Math.random()
-            ball.yMultiplier = 1.0 - ball.xMultiplier
+            //ball.xMultiplier = Math.random()
+            //ball.yMultiplier = 1.0 - ball.xMultiplier
         }
         if(ball.y < 0) {
             ball.yDirection = 1
-            ball.xMultiplier = Math.random()
-            ball.yMultiplier = 1.0 - ball.xMultiplier
+            //ball.xMultiplier = Math.random()
+            //ball.yMultiplier = 1.0 - ball.xMultiplier
         }
         if(ball.y + ball.height > bottomBorder) {
             lost = true
@@ -245,7 +247,15 @@ Your browser does not support the HTML canvas tag.
             if(ball.y + ball.height > board.y) {
                 ball.yDirection = -1
                 ball.xDirection = ball.xDirection * -1
-                ball.xMultiplier = Math.random()
+
+                let centerOfBall = ball.x + ball.width/2
+                let centerOfBoard = board.x + board.width/2
+                let maxDistanceFromCenter = board.width/2
+
+                let distance = centerOfBoard - centerOfBall
+                let multiplier = distance/maxDistanceFromCenter
+
+                ball.xMultiplier = multiplier
                 ball.yMultiplier = 1.0 - ball.xMultiplier
             }
         }
