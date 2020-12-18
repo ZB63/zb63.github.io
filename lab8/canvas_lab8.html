@@ -251,13 +251,13 @@ Your browser does not support the HTML canvas tag.
 
                         if(x < 0) { // turn right
                             x = Math.abs(x)
-                            keys.left = false
-                            keys.right = true
+                            keys.left = true
+                            keys.right = false
                             
                             mobile.moveBy = x/9.0 * UNITW
                         } else if (x > 0 ) { // turn left
-                            keys.left = true
-                            keys.right = false
+                            keys.left = false
+                            keys.right = true
                             
                             mobile.moveBy = x/9.0 * UNITW
                         } else {
@@ -280,13 +280,13 @@ Your browser does not support the HTML canvas tag.
 
                 if(x < 0) { // turn right
                     x = Math.abs(x)
-                    keys.left = false
-                    keys.right = true
+                    keys.left = true
+                    keys.right = false
                     
                     mobile.moveBy = x/9.0 * UNITW
                 } else if (x > 0 ) { // turn left
-                    keys.left = true
-                    keys.right = false
+                    keys.left = false
+                    keys.right = true
                     
                     mobile.moveBy = x/9.0 * UNITW
                 } else {
