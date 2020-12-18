@@ -27,6 +27,8 @@ Your browser does not support the HTML canvas tag.
     let bottomBorder = HEIGHT
 
     let game = true
+    let win = false
+    let lost = false
 
     board = {
         width: WIDTH/3,
@@ -111,11 +113,13 @@ Your browser does not support the HTML canvas tag.
             moveBall()
 
             checkColission()
+            checkIfWin()
 
             drawBackground()
             drawBoard()
             drawBrick()
             drawBall()
+            handleEndGame()
         } else {
             
         }
@@ -143,6 +147,27 @@ Your browser does not support the HTML canvas tag.
         board.width = UNITW*300
         board.height = UNITH*50
         HEIGHT - UNITH*100
+    }
+
+    function checkIfWin() {
+        if(brick.position.length === 0) {
+            win = true
+        }
+    }
+
+    function handleEndGame() {
+        if(win) {
+            game = false
+            ctx.fillStyle = "white";
+            ctx.font = "60px Arial";
+            ctx.fillText("You won!", WIDTH/2 - 50, HEIGHT/2 - 5);
+        }
+        if(lost) {
+            game = false
+            ctx.fillStyle = "white";
+            ctx.font = "60px Arial";
+            ctx.fillText("You lost!", WIDTH/2 - 50, HEIGHT/2 - 5);
+        }
     }
 
     function addBricks() {
@@ -211,7 +236,7 @@ Your browser does not support the HTML canvas tag.
             ball.yMultiplier = 1.0 - ball.xMultiplier
         }
         if(ball.y + ball.height > bottomBorder) {
-            game = false
+            lost = true
         }
 
         // ball colission with board
@@ -228,9 +253,9 @@ Your browser does not support the HTML canvas tag.
         // ball colission with bricks
 
         for(let i = brick.position.length - 1; i>=0; i--) {
-            if((brick.position[i].x > board.x && brick.position[i].x < board.x + board.width) 
-            && (brick.position[i].x + brick.width < board.x + board.width && brick.position[i].x + brick.width > board.x) ) {
-                if( (ball.y > brick.position[i].y - brick.width) && (ball.y < brick.position[i].y) ) {
+            if((ball.x >= brick.position[i].x && ball.x <= brick.position[i].x + brick.width) 
+            || (ball.x + ball.width <= brick.position[i].x + brick.width && ball.x + ball.width >= brick.position[i].x) ) {
+                if( (ball.y >= brick.position[i].y - brick.width) && (ball.y <= brick.position[i].y) ) {
                     brick.position.splice(i,1)
                 }
             }
@@ -358,7 +383,7 @@ Your browser does not support the HTML canvas tag.
       display: inline-block;
       font-size: 32px;
       cursor: pointer;
-      width: 100%;
+      width: 99%;
       height: 90px;
     }
     </style>
