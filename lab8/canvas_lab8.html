@@ -242,9 +242,8 @@ Your browser does not support the HTML canvas tag.
             DeviceOrientationEvent.requestPermission()
             .then( permissionState => {
                 if (permissionState === "granted") { 
-                    window.ondevicemotion = function(event) {
-                        
-                        let x = event.accelerationIncludingGravity.x;
+                    window.addEventListener("deviceorientation", function(event) {
+                        let x = event.gamma;
                         
                         if(x != null) {
                             mobile.active = true
@@ -254,29 +253,30 @@ Your browser does not support the HTML canvas tag.
                             x = Math.abs(x)
                             keys.left = false
                             keys.right = true
-                            if(x < -2.0) {
-                                x = -2.0
+                            if(x < -5.0) {
+                                x = -5.0
                             }
-                            mobile.moveBy = -x/2.0 * UNITW
+                            mobile.moveBy = x/9.0 * UNITW
                         } else if (x > 0 ) { // turn left
                             keys.left = true
                             keys.right = false
-                            if(x > 2.0) {
-                                x = 2.0
+                            if(x > 5.0) {
+                                x = 5.0
                             }
-                            mobile.moveBy = -x/2.0 * UNITW
+                            mobile.moveBy = x/9.0 * UNITW
                         } else {
                             keys.left = false
                             keys.right = false
                         }
-                    }
+                    }, true);
+
                 } else {
                     DeviceOrientationEvent.requestPermission()
                 }
             }).catch(console.error)
         } else {
-            window.ondevicemotion = function(event) {
-                let x = event.accelerationIncludingGravity.x;
+            window.addEventListener("deviceorientation", function(event) {
+                let x = event.gamma;
                 
                 if(x != null) {
                     mobile.active = true
@@ -286,22 +286,22 @@ Your browser does not support the HTML canvas tag.
                     x = Math.abs(x)
                     keys.left = false
                     keys.right = true
-                    if(x < -2.0) {
-                        x = -2.0
+                    if(x < -5.0) {
+                        x = -5.0
                     }
-                    mobile.moveBy = x/2.0
+                    mobile.moveBy = x/9.0 * UNITW
                 } else if (x > 0 ) { // turn left
                     keys.left = true
                     keys.right = false
-                    if(x > 2.0) {
-                        x = 2.0
+                    if(x > 5.0) {
+                        x = 5.0
                     }
-                    mobile.moveBy = x/2.0
+                    mobile.moveBy = x/9.0 * UNITW
                 } else {
                     keys.left = false
                     keys.right = false
                 }
-            }
+            }, true);
         }
     }
 
