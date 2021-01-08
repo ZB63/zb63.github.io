@@ -42,8 +42,8 @@ Your browser does not support the HTML canvas tag.
     }
 
     ball = {
-        x: 500,
-        y: 500,
+        x: WIDTH/2,
+        y: HEIGHT/2,
         width: 50 * UNITW,
         height: 50 * UNITH
     }
@@ -70,7 +70,7 @@ Your browser does not support the HTML canvas tag.
     resizeCanvas();
 
     // preload images
-    let images = ['ball.png'];
+    let images = ['ball.png', 'brick.png'];
     let loadedImages = {};
     let promiseArray = images.map(function(imgurl){
         let prom = new Promise(function(resolve,reject){
@@ -113,6 +113,12 @@ Your browser does not support the HTML canvas tag.
         ctx.drawImage(loadedImages["ball.png"],ball.x,ball.y,ball.width,ball.height);
     }
     
+    // function drawLabyrinth(id) {
+    //     if(id === 1) {
+
+    //     }
+    // }
+
     function randomInRange(minInclude, maxInculde) {
         let random = Math.random( );
         return random * (maxInculde - minInclude) + minInclude
@@ -151,88 +157,64 @@ Your browser does not support the HTML canvas tag.
 
                         if(mobile.verticalOrientation) {
                             if(y < 0) { // turn right
+
                                 y = Math.abs(y)
                                 keys.left = true
                                 keys.right = false
 
-                                ctx.fillStyle = "white";
-                                ctx.font = "60px Arial";
-                                ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
-                                //mobile.moveBy = y/9.0 * UNITW
                             } else if (y > 0 ) { // turn left
+
                                 keys.left = false
                                 keys.right = true
                                 
-                                ctx.fillStyle = "white";
-                                ctx.font = "60px Arial";
-                                ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
-                                //mobile.moveBy = y/9.0 * UNITW
                             } else {
                                 keys.left = false
                                 keys.right = false
                             }
 
                             if(x < 0) { // turn up
+
                                 x = Math.abs(x)
                                 keys.down = false
                                 keys.up = true
 
-                                ctx.fillStyle = "white";
-                                ctx.font = "60px Arial";
-                                ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
-                                //mobile.moveBy = y/9.0 * UNITW
                             } else if (x > 0 ) { // turn down
+
                                 keys.down = true
                                 keys.up = false
-                                
-                                ctx.fillStyle = "white";
-                                ctx.font = "60px Arial";
-                                ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
-                                //mobile.moveBy = y/9.0 * UNITW
+
                             } else {
                                 keys.left = false
                                 keys.right = false
                             }
                         } else {
                             if(x < 0) { // turn right
+
                                 y = Math.abs(y)
                                 keys.left = true
                                 keys.right = false
 
-                                ctx.fillStyle = "white";
-                                ctx.font = "60px Arial";
-                                ctx.fillText(y, WIDTH/2 - 300, HEIGHT/2 + 0);
-                                //mobile.moveBy = y/9.0 * UNITW
                             } else if (x > 0 ) { // turn left
+
                                 keys.left = false
                                 keys.right = true
-                                
-                                ctx.fillStyle = "white";
-                                ctx.font = "60px Arial";
-                                ctx.fillText(y, WIDTH/2 - 300, HEIGHT/2 + 0);
-                                //mobile.moveBy = y/9.0 * UNITW
+
                             } else {
                                 keys.left = false
                                 keys.right = false
                             }
 
                             if(y < 0) { // turn down
+
                                 x = Math.abs(x)
                                 keys.down = true
                                 keys.up = false
 
-                                ctx.fillStyle = "white";
-                                ctx.font = "60px Arial";
-                                ctx.fillText(x, WIDTH/2 - 300, HEIGHT/2 + 100);
-                                //mobile.moveBy = y/9.0 * UNITW
                             } else if (y > 0 ) { // turn down
+
                                 keys.down = false
                                 keys.up = true
-                                
-                                ctx.fillStyle = "white";
-                                ctx.font = "60px Arial";
-                                ctx.fillText(x, WIDTH/2 - 300, HEIGHT/2 + 100);
-                                //mobile.moveBy = y/9.0 * UNITW
+
                             } else {
                                 keys.left = false
                                 keys.right = false
