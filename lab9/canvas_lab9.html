@@ -183,11 +183,37 @@ Your browser does not support the HTML canvas tag.
                             keys.left = false
                             keys.right = true
                             
+                            ctx.fillStyle = "white";
+                            ctx.font = "60px Arial";
+                            ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
                             //mobile.moveBy = y/9.0 * UNITW
                         } else {
                             keys.left = false
                             keys.right = false
                         }
+
+                        if(x < 0) { // turn down
+                            x = Math.abs(x)
+                            keys.down = true
+                            keys.up = false
+
+                            ctx.fillStyle = "white";
+                            ctx.font = "60px Arial";
+                            ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
+                            //mobile.moveBy = y/9.0 * UNITW
+                        } else if (x > 0 ) { // turn left
+                            keys.down = false
+                            keys.up = true
+                            
+                            ctx.fillStyle = "white";
+                            ctx.font = "60px Arial";
+                            ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
+                            //mobile.moveBy = y/9.0 * UNITW
+                        } else {
+                            keys.left = false
+                            keys.right = false
+                        }
+
             }, true);
         }
     }
