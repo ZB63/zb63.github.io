@@ -41,6 +41,13 @@ Your browser does not support the HTML canvas tag.
         verticalOrientation: true
     }
 
+    ball = {
+        x: 500,
+        y: 500,
+        width: 50 * UNITW,
+        height: 50 * UNITH
+    }
+
     window.addEventListener('resize', resizeCanvas, false);
 
     function resizeCanvas() {
@@ -87,31 +94,10 @@ Your browser does not support the HTML canvas tag.
     function mainLoop() {
         if(game) {
 
+            moveBall()
+
             drawBackground()
-
-            if(keys.left) {
-                ctx.fillStyle = "white";
-                ctx.font = "60px Arial";
-                ctx.fillText("LEFT", WIDTH/2 - 50, HEIGHT/2 - 5);
-            }
-
-            if(keys.right) {
-                ctx.fillStyle = "white";
-                ctx.font = "60px Arial";
-                ctx.fillText("RIGHT", WIDTH/2 - 50, HEIGHT/2 - 70);
-            }
-
-            if(keys.up) {
-                ctx.fillStyle = "white";
-                ctx.font = "60px Arial";
-                ctx.fillText("UP", WIDTH/2 - 50, HEIGHT/2 + 110);
-            }
-
-            if(keys.down) {
-                ctx.fillStyle = "white";
-                ctx.font = "60px Arial";
-                ctx.fillText("DOWN", WIDTH/2 - 50, HEIGHT/2 + 50);
-            }
+            drawBall()
 
         } else {
             
@@ -132,6 +118,24 @@ Your browser does not support the HTML canvas tag.
         return random * (maxInculde - minInclude) + minInclude
     }
 
+    function moveBall() {
+        if(keys.left) {
+            ball.x = ball.x - 2*UNITW
+        }
+
+        if(keys.right) {
+            ball.x = ball.x + 2*UNITW
+        }
+
+        if(keys.up) {
+            ball.y = ball.y - 2*UNITH
+        }
+
+        if(keys.down) {
+            ball.y = ball.y + 2*UNITH
+        }
+    }
+
     function enableDeviceOrientation() {
         if (typeof(DeviceOrientationEvent.requestPermission) === "function") {
             DeviceOrientationEvent.requestPermission()
@@ -139,39 +143,6 @@ Your browser does not support the HTML canvas tag.
                 if (permissionState === "granted") { 
                     window.addEventListener("deviceorientation", function(event) {
                         let x = event.beta;  // x
-                        let y = event.gamma; // y
-                        
-                        if(y != null && x != null) {
-                            mobile.active = true
-                        }
-
-                        if(y < 0) { // turn right
-                            y = Math.abs(y)
-                            keys.left = true
-                            keys.right = false
-
-                            ctx.fillStyle = "white";
-                            ctx.font = "60px Arial";
-                            ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
-                            //mobile.moveBy = y/9.0 * UNITW
-                        } else if (y > 0 ) { // turn left
-                            keys.left = false
-                            keys.right = true
-                            
-                            //mobile.moveBy = y/9.0 * UNITW
-                        } else {
-                            keys.left = false
-                            keys.right = false
-                        }
-                    }, true);
-
-                } else {
-                    DeviceOrientationEvent.requestPermission()
-                }
-            }).catch(console.error)
-        } else {
-            window.addEventListener("deviceorientation", function(event) {
-                let x = event.beta;  // x
                         let y = event.gamma; // y
                         
                         if(y != null && x != null) {
@@ -267,8 +238,110 @@ Your browser does not support the HTML canvas tag.
                                 keys.right = false
                             }
                         }
+                    }, true);
 
+                } else {
+                    DeviceOrientationEvent.requestPermission()
+                }
+            }).catch(console.error)
+        } else {
+            window.addEventListener("deviceorientation", function(event) {
+                let x = event.beta;  // x
+                let y = event.gamma; // y
+                
+                if(y != null && x != null) {
+                    mobile.active = true
+                }
+
+                if(mobile.verticalOrientation) {
+                    if(y < 0) { // turn right
+                        y = Math.abs(y)
+                        keys.left = true
+                        keys.right = false
+
+                        ctx.fillStyle = "white";
+                        ctx.font = "60px Arial";
+                        ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
+                        //mobile.moveBy = y/9.0 * UNITW
+                    } else if (y > 0 ) { // turn left
+                        keys.left = false
+                        keys.right = true
                         
+                        ctx.fillStyle = "white";
+                        ctx.font = "60px Arial";
+                        ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
+                        //mobile.moveBy = y/9.0 * UNITW
+                    } else {
+                        keys.left = false
+                        keys.right = false
+                    }
+
+                    if(x < 0) { // turn up
+                        x = Math.abs(x)
+                        keys.down = false
+                        keys.up = true
+
+                        ctx.fillStyle = "white";
+                        ctx.font = "60px Arial";
+                        ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
+                        //mobile.moveBy = y/9.0 * UNITW
+                    } else if (x > 0 ) { // turn down
+                        keys.down = true
+                        keys.up = false
+                        
+                        ctx.fillStyle = "white";
+                        ctx.font = "60px Arial";
+                        ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
+                        //mobile.moveBy = y/9.0 * UNITW
+                    } else {
+                        keys.left = false
+                        keys.right = false
+                    }
+                } else {
+                    if(x < 0) { // turn right
+                        y = Math.abs(y)
+                        keys.left = true
+                        keys.right = false
+
+                        ctx.fillStyle = "white";
+                        ctx.font = "60px Arial";
+                        ctx.fillText(y, WIDTH/2 - 300, HEIGHT/2 + 0);
+                        //mobile.moveBy = y/9.0 * UNITW
+                    } else if (x > 0 ) { // turn left
+                        keys.left = false
+                        keys.right = true
+                        
+                        ctx.fillStyle = "white";
+                        ctx.font = "60px Arial";
+                        ctx.fillText(y, WIDTH/2 - 300, HEIGHT/2 + 0);
+                        //mobile.moveBy = y/9.0 * UNITW
+                    } else {
+                        keys.left = false
+                        keys.right = false
+                    }
+
+                    if(y < 0) { // turn down
+                        x = Math.abs(x)
+                        keys.down = true
+                        keys.up = false
+
+                        ctx.fillStyle = "white";
+                        ctx.font = "60px Arial";
+                        ctx.fillText(x, WIDTH/2 - 300, HEIGHT/2 + 100);
+                        //mobile.moveBy = y/9.0 * UNITW
+                    } else if (y > 0 ) { // turn down
+                        keys.down = false
+                        keys.up = true
+                        
+                        ctx.fillStyle = "white";
+                        ctx.font = "60px Arial";
+                        ctx.fillText(x, WIDTH/2 - 300, HEIGHT/2 + 100);
+                        //mobile.moveBy = y/9.0 * UNITW
+                    } else {
+                        keys.left = false
+                        keys.right = false
+                    }
+                }     
 
             }, true);
         }
