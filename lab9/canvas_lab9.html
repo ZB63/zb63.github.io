@@ -223,18 +223,18 @@ Your browser does not support the HTML canvas tag.
                                 keys.right = false
                             }
                         } else {
-                            if(x < 0) { // turn right
+                            if(x < 0) { // turn left
                                 y = Math.abs(y)
-                                keys.left = true
-                                keys.right = false
+                                keys.left = false
+                                keys.right = true
 
                                 ctx.fillStyle = "white";
                                 ctx.font = "60px Arial";
                                 ctx.fillText(y, WIDTH/2 - 300, HEIGHT/2 + 0);
                                 //mobile.moveBy = y/9.0 * UNITW
-                            } else if (x > 0 ) { // turn left
-                                keys.left = false
-                                keys.right = true
+                            } else if (x > 0 ) { // turn right
+                                keys.left = true
+                                keys.right = false
                                 
                                 ctx.fillStyle = "white";
                                 ctx.font = "60px Arial";
