@@ -223,18 +223,18 @@ Your browser does not support the HTML canvas tag.
                                 keys.right = false
                             }
                         } else {
-                            if(x < 0) { // turn left
+                            if(x < 0) { // turn right
                                 y = Math.abs(y)
-                                keys.left = false
-                                keys.right = true
+                                keys.left = true
+                                keys.right = false
 
                                 ctx.fillStyle = "white";
                                 ctx.font = "60px Arial";
                                 ctx.fillText(y, WIDTH/2 - 300, HEIGHT/2 + 0);
                                 //mobile.moveBy = y/9.0 * UNITW
-                            } else if (x > 0 ) { // turn right
-                                keys.left = true
-                                keys.right = false
+                            } else if (x > 0 ) { // turn left
+                                keys.left = false
+                                keys.right = true
                                 
                                 ctx.fillStyle = "white";
                                 ctx.font = "60px Arial";
@@ -245,18 +245,18 @@ Your browser does not support the HTML canvas tag.
                                 keys.right = false
                             }
 
-                            if(y < 0) { // turn up
+                            if(y < 0) { // turn down
                                 x = Math.abs(x)
-                                keys.down = false
-                                keys.up = true
+                                keys.down = true
+                                keys.up = false
 
                                 ctx.fillStyle = "white";
                                 ctx.font = "60px Arial";
                                 ctx.fillText(x, WIDTH/2 - 300, HEIGHT/2 + 100);
                                 //mobile.moveBy = y/9.0 * UNITW
                             } else if (y > 0 ) { // turn down
-                                keys.down = true
-                                keys.up = false
+                                keys.down = false
+                                keys.up = true
                                 
                                 ctx.fillStyle = "white";
                                 ctx.font = "60px Arial";
