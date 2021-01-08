@@ -104,6 +104,7 @@ Your browser does not support the HTML canvas tag.
 
     function imagesLoaded(){
         enableDeviceOrientation()
+        generateBricks(1)
         setInterval(mainLoop, 20)
     }
 
@@ -114,6 +115,7 @@ Your browser does not support the HTML canvas tag.
 
             drawBackground()
             drawBall()
+            drawBricks()
 
         } else {
             
@@ -128,12 +130,27 @@ Your browser does not support the HTML canvas tag.
     function drawBall() {
         ctx.drawImage(loadedImages["ball.png"],ball.x,ball.y,ball.width,ball.height);
     }
-    
-    // function drawLabyrinth(id) {
-    //     if(id === 1) {
 
-    //     }
-    // }
+    function drawBricks() {
+        for(let i=0;i<brick.positions.length;i++) {
+            ctx.drawImage(loadedImages["brick.png"],brick.positions[i].x,brick.positions[i].y,brick.width,brick.height);
+        }
+    }
+
+    function generateBricks(id) {
+        let schema = null
+        if(id === 1) {
+            schema = labyrinthSchema1
+        }
+
+        for(let i=0;i<schema.length;i++) {
+            for(let j=0;j<schema[i].length;j++) {
+                if(schema[i][j] === 1) {
+                    brick.positions.push({x: j*brick.width ,y: i*brick.height })
+                }
+            }
+        }
+    }
 
     function randomInRange(minInclude, maxInculde) {
         let random = Math.random( );
