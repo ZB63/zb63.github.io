@@ -47,6 +47,12 @@ Your browser does not support the HTML canvas tag.
         height: 50 * UNITH
     }
 
+    brick = {
+        positions: [], // {x:0, y:0}
+        width: 100 * UNITW,
+        height: 100* UNITH
+    }
+
     const labyrinthSchema1 = [[1,1,1,1,1,1,1,1,1,1],
                               [1,0,0,0,0,0,0,0,0,1],
                               [1,0,0,0,0,0,0,0,0,1],
@@ -162,19 +168,21 @@ Your browser does not support the HTML canvas tag.
                     window.addEventListener("deviceorientation", function(event) {
                         let x = event.beta;  // x
                         let y = event.gamma; // y
+
+                        let bound = 3
                         
                         if(y != null && x != null) {
                             mobile.active = true
                         }
 
                         if(mobile.verticalOrientation) {
-                            if(y < 0) { // turn right
+                            if(y < -bound) { // turn right
 
                                 y = Math.abs(y)
                                 keys.left = true
                                 keys.right = false
 
-                            } else if (y > 0 ) { // turn left
+                            } else if (y > bound ) { // turn left
 
                                 keys.left = false
                                 keys.right = true
@@ -184,13 +192,13 @@ Your browser does not support the HTML canvas tag.
                                 keys.right = false
                             }
 
-                            if(x < 0) { // turn up
+                            if(x < -bound) { // turn up
 
                                 x = Math.abs(x)
                                 keys.down = false
                                 keys.up = true
 
-                            } else if (x > 0 ) { // turn down
+                            } else if (x > bound ) { // turn down
 
                                 keys.down = true
                                 keys.up = false
@@ -200,13 +208,13 @@ Your browser does not support the HTML canvas tag.
                                 keys.right = false
                             }
                         } else {
-                            if(x < 0) { // turn right
+                            if(x < -bound) { // turn right
 
                                 y = Math.abs(y)
                                 keys.left = true
                                 keys.right = false
 
-                            } else if (x > 0 ) { // turn left
+                            } else if (x > bound ) { // turn left
 
                                 keys.left = false
                                 keys.right = true
@@ -216,13 +224,13 @@ Your browser does not support the HTML canvas tag.
                                 keys.right = false
                             }
 
-                            if(y < 0) { // turn down
+                            if(y < -bound) { // turn down
 
                                 x = Math.abs(x)
                                 keys.down = true
                                 keys.up = false
 
-                            } else if (y > 0 ) { // turn down
+                            } else if (y > bound ) { // turn down
 
                                 keys.down = false
                                 keys.up = true
@@ -242,60 +250,70 @@ Your browser does not support the HTML canvas tag.
             window.addEventListener("deviceorientation", function(event) {
                 let x = event.beta;  // x
                 let y = event.gamma; // y
+
+                let bound = 3
                 
                 if(y != null && x != null) {
                     mobile.active = true
                 }
 
                 if(mobile.verticalOrientation) {
-                    if(y < 0) { // turn right
+                    if(y < -bound) { // turn right
+
                         y = Math.abs(y)
                         keys.left = true
                         keys.right = false
 
-                    } else if (y > 0 ) { // turn left
+                    } else if (y > bound ) { // turn left
+
                         keys.left = false
                         keys.right = true
-
+                        
                     } else {
                         keys.left = false
                         keys.right = false
                     }
 
-                    if(x < 0) { // turn up
+                    if(x < -bound) { // turn up
+
                         x = Math.abs(x)
                         keys.down = false
                         keys.up = true
 
-                    } else if (x > 0 ) { // turn down
+                    } else if (x > bound ) { // turn down
+
                         keys.down = true
                         keys.up = false
-                        
+
                     } else {
                         keys.left = false
                         keys.right = false
                     }
                 } else {
-                    if(x < 0) { // turn right
+                    if(x < -bound) { // turn right
+
                         y = Math.abs(y)
                         keys.left = true
                         keys.right = false
 
-                    } else if (x > 0 ) { // turn left
+                    } else if (x > bound ) { // turn left
+
                         keys.left = false
                         keys.right = true
-                        
+
                     } else {
                         keys.left = false
                         keys.right = false
                     }
 
-                    if(y < 0) { // turn down
+                    if(y < -bound) { // turn down
+
                         x = Math.abs(x)
                         keys.down = true
                         keys.up = false
 
-                    } else if (y > 0 ) { // turn down
+                    } else if (y > bound ) { // turn down
+
                         keys.down = false
                         keys.up = true
 
