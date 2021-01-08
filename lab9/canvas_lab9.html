@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta name = "viewport" content = "width=device-width">
+</head>
+<body>
+
+<canvas id="myCanvas" style="border:1px solid #000000;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+<script>
+
+    // SEBASTIAN PAWEŁOSZEK 215844
+
+    let c = document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+    let WIDTH = window.innerWidth - 3
+    let HEIGHT = window.innerHeight - 3;
+    let UNITW = WIDTH/1000
+    let UNITH = HEIGHT/1000
+
+    let leftBorder = 0
+    let rightBorder = WIDTH
+    let topBorder = 0
+    let bottomBorder = HEIGHT
+
+    let game = true
+
+    keys = {
+        up: false,
+        down: false,
+        left: false,
+        down: false
+    }
+
+    mobile = {
+        active: false,
+        moveBy: 0.0
+    }
+
+    window.addEventListener('resize', resizeCanvas, false);
+
+    function resizeCanvas() {
+            c.width = window.innerWidth - 3;
+            c.height = window.innerHeight - 3;
+            WIDTH = c.width
+            HEIGHT = c.height
+            UNITW = WIDTH/1000.0
+            UNITH = HEIGHT/1000.0
+            rightBorder = WIDTH
+            bottomBorder = HEIGHT
+    }
+    resizeCanvas();
+
+    // preload images
+    let images = ['ball.png'];
+    let loadedImages = {};
+    let promiseArray = images.map(function(imgurl){
+        let prom = new Promise(function(resolve,reject){
+            let img = new Image();
+            img.onload = function(){
+                loadedImages[imgurl] = img;
+                resolve();
+            };
+            img.src = imgurl;
+        });
+        return prom;
+    });
+
+    Promise.all(promiseArray).then(imagesLoaded);
+
+    function imagesLoaded(){
+        enableDeviceOrientation()
+        setInterval(mainLoop, 20)
+    }
+
+    function mainLoop() {
+        if(game) {
+
+            drawBackground()
+
+        } else {
+            
+        }
+    }
+
+    function drawBackground() {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    }
+
+    function drawBall() {
+        ctx.drawImage(loadedImages["ball.png"],ball.x,ball.y,ball.width,ball.height);
+    }
+    
+    function randomInRange(minInclude, maxInculde) {
+        let random = Math.random( );
+        return random * (maxInculde - minInclude) + minInclude
+    }
+
+    function enableDeviceOrientation() {
+        if (typeof(DeviceOrientationEvent.requestPermission) === "function") {
+            DeviceOrientationEvent.requestPermission()
+            .then( permissionState => {
+                if (permissionState === "granted") { 
+                    window.addEventListener("deviceorientation", function(event) {
+                        // let x = event.gamma;
+                        
+                        // if(x != null) {
+                        //     mobile.active = true
+                        // }
+
+                        // if(x < 0) { // turn right
+                        //     x = Math.abs(x)
+                        //     keys.left = true
+                        //     keys.right = false
+                            
+                        //     mobile.moveBy = x/9.0 * UNITW
+                        // } else if (x > 0 ) { // turn left
+                        //     keys.left = false
+                        //     keys.right = true
+                            
+                        //     mobile.moveBy = x/9.0 * UNITW
+                        // } else {
+                        //     keys.left = false
+                        //     keys.right = false
+                        // }
+                    }, true);
+
+                } else {
+                    DeviceOrientationEvent.requestPermission()
+                }
+            }).catch(console.error)
+        } else {
+            window.addEventListener("deviceorientation", function(event) {
+                // let x = event.gamma;
+                        
+                // if(x != null) {
+                //     mobile.active = true
+                // }
+
+                // if(x < 0) { // turn right
+                //     x = Math.abs(x)
+                //     keys.left = true
+                //     keys.right = false
+                    
+                //     mobile.moveBy = x/9.0 * UNITW
+                // } else if (x > 0 ) { // turn left
+                //     keys.left = false
+                //     keys.right = true
+                    
+                //     mobile.moveBy = x/9.0 * UNITW
+                // } else {
+                //     keys.left = false
+                //     keys.right = false
+                // }
+            }, true);
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        let key = event.which
+        if(key === 37) { // left arrow - move left
+            keys.left = true
+        } 
+        if(key === 39) { // right arrow - move right
+            keys.right = true
+        } 
+        if(key === 38) { // up arrow - move up
+            keys.up = true
+        }
+        if(key === 40) { // down arrow - move down
+            keys.down = true
+        }
+        if(key == 32) { // space - shot
+            //shotMissile()
+        }
+    })
+
+    document.addEventListener('keyup', function(event) {
+        let key = event.which
+        if(key === 37) { // left arrow - move left
+            keys.left = false
+        } 
+        if(key === 39) { // right arrow - move right
+            keys.right = false
+        } 
+        if(key === 38) { // up arrow - move up
+            keys.up = false
+        }
+        if(key === 40) { // down arrow - move down
+            keys.down = false
+        }
+    })
+
+</script>
+
+<button class="button" type="button" id="enableButton" onmousedown="enableDeviceOrientation()">ENABLE DEVICE MOTION</button>
+
+</body>
+<style>
+    * {
+        touch-action: manipulation;
+        margin:0; 
+        padding:0;
+    }
+    canvas {
+        display:block;
+        height:100%;
+    }
+    html, body { width:100%; height: 100%;}
+    .button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding:0;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 32px;
+      cursor: pointer;
+      width: 99%;
+      height: 90px;
+    }
+    </style>
+</html>
