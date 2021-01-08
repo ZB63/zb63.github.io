@@ -37,7 +37,8 @@ Your browser does not support the HTML canvas tag.
 
     mobile = {
         active: false,
-        moveBy: 0.0
+        moveBy: 0.0,
+        verticalOrientation: true
     }
 
     window.addEventListener('resize', resizeCanvas, false);
@@ -51,6 +52,13 @@ Your browser does not support the HTML canvas tag.
             UNITH = HEIGHT/1000.0
             rightBorder = WIDTH
             bottomBorder = HEIGHT
+
+            if(c.width < c.height) {
+                mobile.verticalOrientation = true
+            } else {
+                mobile.verticalOrientation = false
+            }
+            
     }
     resizeCanvas();
 
@@ -170,49 +178,97 @@ Your browser does not support the HTML canvas tag.
                             mobile.active = true
                         }
 
-                        if(y < 0) { // turn right
-                            y = Math.abs(y)
-                            keys.left = true
-                            keys.right = false
+                        if(mobile.verticalOrientation) {
+                            if(y < 0) { // turn right
+                                y = Math.abs(y)
+                                keys.left = true
+                                keys.right = false
 
-                            ctx.fillStyle = "white";
-                            ctx.font = "60px Arial";
-                            ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
-                            //mobile.moveBy = y/9.0 * UNITW
-                        } else if (y > 0 ) { // turn left
-                            keys.left = false
-                            keys.right = true
-                            
-                            ctx.fillStyle = "white";
-                            ctx.font = "60px Arial";
-                            ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
-                            //mobile.moveBy = y/9.0 * UNITW
+                                ctx.fillStyle = "white";
+                                ctx.font = "60px Arial";
+                                ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
+                                //mobile.moveBy = y/9.0 * UNITW
+                            } else if (y > 0 ) { // turn left
+                                keys.left = false
+                                keys.right = true
+                                
+                                ctx.fillStyle = "white";
+                                ctx.font = "60px Arial";
+                                ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
+                                //mobile.moveBy = y/9.0 * UNITW
+                            } else {
+                                keys.left = false
+                                keys.right = false
+                            }
+
+                            if(x < 0) { // turn up
+                                x = Math.abs(x)
+                                keys.down = false
+                                keys.up = true
+
+                                ctx.fillStyle = "white";
+                                ctx.font = "60px Arial";
+                                ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
+                                //mobile.moveBy = y/9.0 * UNITW
+                            } else if (x > 0 ) { // turn down
+                                keys.down = true
+                                keys.up = false
+                                
+                                ctx.fillStyle = "white";
+                                ctx.font = "60px Arial";
+                                ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
+                                //mobile.moveBy = y/9.0 * UNITW
+                            } else {
+                                keys.left = false
+                                keys.right = false
+                            }
                         } else {
-                            keys.left = false
-                            keys.right = false
+                            if(x < 0) { // turn right
+                                y = Math.abs(y)
+                                keys.left = true
+                                keys.right = false
+
+                                ctx.fillStyle = "white";
+                                ctx.font = "60px Arial";
+                                ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
+                                //mobile.moveBy = y/9.0 * UNITW
+                            } else if (x > 0 ) { // turn left
+                                keys.left = false
+                                keys.right = true
+                                
+                                ctx.fillStyle = "white";
+                                ctx.font = "60px Arial";
+                                ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
+                                //mobile.moveBy = y/9.0 * UNITW
+                            } else {
+                                keys.left = false
+                                keys.right = false
+                            }
+
+                            if(y < 0) { // turn up
+                                x = Math.abs(x)
+                                keys.down = false
+                                keys.up = true
+
+                                ctx.fillStyle = "white";
+                                ctx.font = "60px Arial";
+                                ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
+                                //mobile.moveBy = y/9.0 * UNITW
+                            } else if (y > 0 ) { // turn down
+                                keys.down = true
+                                keys.up = false
+                                
+                                ctx.fillStyle = "white";
+                                ctx.font = "60px Arial";
+                                ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
+                                //mobile.moveBy = y/9.0 * UNITW
+                            } else {
+                                keys.left = false
+                                keys.right = false
+                            }
                         }
 
-                        if(x < 0) { // turn down
-                            x = Math.abs(x)
-                            keys.down = true
-                            keys.up = false
-
-                            ctx.fillStyle = "white";
-                            ctx.font = "60px Arial";
-                            ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
-                            //mobile.moveBy = y/9.0 * UNITW
-                        } else if (x > 0 ) { // turn left
-                            keys.down = false
-                            keys.up = true
-                            
-                            ctx.fillStyle = "white";
-                            ctx.font = "60px Arial";
-                            ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
-                            //mobile.moveBy = y/9.0 * UNITW
-                        } else {
-                            keys.left = false
-                            keys.right = false
-                        }
+                        
 
             }, true);
         }
