@@ -37,7 +37,6 @@ Your browser does not support the HTML canvas tag.
 
     mobile = {
         active: false,
-        moveBy: 0.0,
         verticalOrientation: true
     }
 
@@ -47,6 +46,17 @@ Your browser does not support the HTML canvas tag.
         width: 50 * UNITW,
         height: 50 * UNITH
     }
+
+    const labyrinthSchema1 = [[1,1,1,1,1,1,1,1,1,1],
+                              [1,0,0,0,0,0,0,0,0,1],
+                              [1,0,0,0,0,0,0,0,0,1],
+                              [1,0,0,0,0,0,0,0,0,1],
+                              [1,0,0,0,0,0,0,0,0,1],
+                              [1,0,0,0,0,0,0,0,0,1],
+                              [1,0,0,0,0,0,0,0,0,1],
+                              [1,0,0,0,0,0,0,0,0,1],
+                              [1,0,0,0,0,0,0,0,0,1],
+                              [1,1,1,1,1,1,1,1,1,1]]
 
     window.addEventListener('resize', resizeCanvas, false);
 
@@ -241,18 +251,10 @@ Your browser does not support the HTML canvas tag.
                         keys.left = true
                         keys.right = false
 
-                        ctx.fillStyle = "white";
-                        ctx.font = "60px Arial";
-                        ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
-                        //mobile.moveBy = y/9.0 * UNITW
                     } else if (y > 0 ) { // turn left
                         keys.left = false
                         keys.right = true
-                        
-                        ctx.fillStyle = "white";
-                        ctx.font = "60px Arial";
-                        ctx.fillText(y, WIDTH/2 - 50, HEIGHT/2 + 200);
-                        //mobile.moveBy = y/9.0 * UNITW
+
                     } else {
                         keys.left = false
                         keys.right = false
@@ -263,18 +265,10 @@ Your browser does not support the HTML canvas tag.
                         keys.down = false
                         keys.up = true
 
-                        ctx.fillStyle = "white";
-                        ctx.font = "60px Arial";
-                        ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
-                        //mobile.moveBy = y/9.0 * UNITW
                     } else if (x > 0 ) { // turn down
                         keys.down = true
                         keys.up = false
                         
-                        ctx.fillStyle = "white";
-                        ctx.font = "60px Arial";
-                        ctx.fillText(x, WIDTH/2 - 50, HEIGHT/2 + 300);
-                        //mobile.moveBy = y/9.0 * UNITW
                     } else {
                         keys.left = false
                         keys.right = false
@@ -285,18 +279,10 @@ Your browser does not support the HTML canvas tag.
                         keys.left = true
                         keys.right = false
 
-                        ctx.fillStyle = "white";
-                        ctx.font = "60px Arial";
-                        ctx.fillText(y, WIDTH/2 - 300, HEIGHT/2 + 0);
-                        //mobile.moveBy = y/9.0 * UNITW
                     } else if (x > 0 ) { // turn left
                         keys.left = false
                         keys.right = true
                         
-                        ctx.fillStyle = "white";
-                        ctx.font = "60px Arial";
-                        ctx.fillText(y, WIDTH/2 - 300, HEIGHT/2 + 0);
-                        //mobile.moveBy = y/9.0 * UNITW
                     } else {
                         keys.left = false
                         keys.right = false
@@ -307,18 +293,10 @@ Your browser does not support the HTML canvas tag.
                         keys.down = true
                         keys.up = false
 
-                        ctx.fillStyle = "white";
-                        ctx.font = "60px Arial";
-                        ctx.fillText(x, WIDTH/2 - 300, HEIGHT/2 + 100);
-                        //mobile.moveBy = y/9.0 * UNITW
                     } else if (y > 0 ) { // turn down
                         keys.down = false
                         keys.up = true
-                        
-                        ctx.fillStyle = "white";
-                        ctx.font = "60px Arial";
-                        ctx.fillText(x, WIDTH/2 - 300, HEIGHT/2 + 100);
-                        //mobile.moveBy = y/9.0 * UNITW
+
                     } else {
                         keys.left = false
                         keys.right = false
