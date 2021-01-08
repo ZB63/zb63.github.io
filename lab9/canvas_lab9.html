@@ -135,20 +135,22 @@ Your browser does not support the HTML canvas tag.
     }
 
     function moveBall() {
+        let moveBy = 1
+
         if(keys.left) {
-            ball.x = ball.x - 2*UNITW
+            ball.x = ball.x - moveBy*UNITW
         }
 
         if(keys.right) {
-            ball.x = ball.x + 2*UNITW
+            ball.x = ball.x + moveBy*UNITW
         }
 
         if(keys.up) {
-            ball.y = ball.y - 2*UNITH
+            ball.y = ball.y - moveBy*UNITH
         }
 
         if(keys.down) {
-            ball.y = ball.y + 2*UNITH
+            ball.y = ball.y + moveBy*UNITH
         }
     }
 
