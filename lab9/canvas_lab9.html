@@ -81,6 +81,27 @@ Your browser does not support the HTML canvas tag.
                               [1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1],
                               [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]
 
+    const labyrinthSchema2 = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                              [1,0,1,0,0,1,0,0,0,1,0,1,0,1,0,1,0,0,0,1],
+                              [1,0,1,1,0,1,0,1,0,1,0,0,0,1,0,1,0,1,0,1],
+                              [1,0,0,0,0,1,0,1,0,0,0,1,0,1,0,0,0,1,0,1],
+                              [1,0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,0,1],
+                              [1,0,1,0,0,1,0,1,0,1,1,1,0,1,0,1,0,0,0,1],
+                              [1,0,1,1,0,1,0,0,0,1,0,1,0,1,0,1,1,1,1,1],
+                              [1,0,0,0,0,1,0,1,0,0,0,1,0,0,0,1,0,0,0,1],
+                              [1,0,1,1,1,1,0,1,1,1,1,1,1,1,0,1,0,1,1,1],
+                              [1,0,1,0,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1],
+                              [1,0,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1],
+                              [1,0,1,0,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1],
+                              [1,0,1,0,0,0,1,1,0,1,1,1,1,1,0,1,0,0,0,1],
+                              [1,0,1,0,1,0,0,1,0,0,0,0,0,1,0,1,1,1,1,1],
+                              [1,0,1,0,1,1,0,1,1,1,1,1,0,1,0,0,0,0,0,1],
+                              [1,0,1,0,1,1,0,0,0,1,0,1,0,1,1,1,1,0,1,1],
+                              [1,0,1,0,0,1,1,1,0,1,0,1,0,0,0,0,0,0,0,1],
+                              [1,0,1,1,0,1,0,0,0,0,0,1,1,1,1,0,1,1,1,1],
+                              [1,0,0,0,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,1],
+                              [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]
+
     window.addEventListener('resize', resizeCanvas, false);
 
     function resizeCanvas() {
@@ -121,7 +142,7 @@ Your browser does not support the HTML canvas tag.
 
     function imagesLoaded(){
         enableDeviceOrientation()
-        generateBricks(1)
+        generateBricks()
         setInterval(mainLoop, 20)
     }
 
@@ -163,10 +184,18 @@ Your browser does not support the HTML canvas tag.
         ctx.fillRect(endPosition.x, endPosition.y, endPosition.width, endPosition.height);
     }
 
-    function generateBricks(id) {
+    function generateBricks() {
         let schema = null
+        let id = 1
+
+        if(Math.random() > 0.5) {
+            id = 2
+        }
+        
         if(id === 1) {
             schema = labyrinthSchema1
+        } else if(id === 2) {
+            schema = labyrinthSchema2
         }
 
         for(let i=0;i<schema.length;i++) {
