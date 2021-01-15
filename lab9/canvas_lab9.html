@@ -53,6 +53,13 @@ Your browser does not support the HTML canvas tag.
         height: 100* UNITH
     }
 
+    endPosition = {
+        x: UNITW*100*8,
+        y: UNITH*100*8,
+        width: UNITW*100,
+        height: UNITH*100
+    }
+
     const labyrinthSchema1 = [[1,1,1,1,1,1,1,1,1,1],
                               [1,0,1,0,1,0,0,1,0,1],
                               [1,0,1,0,1,1,0,1,0,1],
@@ -114,8 +121,11 @@ Your browser does not support the HTML canvas tag.
             moveBallWithCollisionDetect()
 
             drawBackground()
-            drawBall()
             drawBricks()
+            drawEndPosition()
+            drawBall()
+
+            checkIfEnded()
 
         } else {
             
@@ -135,6 +145,11 @@ Your browser does not support the HTML canvas tag.
         for(let i=0;i<brick.positions.length;i++) {
             ctx.drawImage(loadedImages["brick.png"],brick.positions[i].x,brick.positions[i].y,brick.width,brick.height);
         }
+    }
+
+    function drawEndPosition() {
+        ctx.fillStyle = "green";
+        ctx.fillRect(endPosition.x, endPosition.y, endPosition.width, endPosition.height);
     }
 
     function generateBricks(id) {
@@ -247,6 +262,18 @@ Your browser does not support the HTML canvas tag.
             if(canDoIt) {
                 ball.y = ball.y + moveBy*UNITH
             }
+        }
+    }
+
+    function checkIfEnded() {
+        if( (ball.x < endPosition.x + endPosition.width && ball.x + 2 > endPosition.x) &&
+            (ball.y + ball.height > endPosition.y && ball.y < endPosition.y + endPosition.height)) {
+            game = false
+            ctx.fillStyle = "white";
+            ctx.font = "70px Arial";
+            ctx.fillText("You won!", WIDTH/2 - 50, HEIGHT/2 - 5);
+        } else {
+            // do nothing
         }
     }
 
