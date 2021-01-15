@@ -122,8 +122,9 @@ Your browser does not support the HTML canvas tag.
 
             drawBackground()
             drawBricks()
-            drawEndPosition()
             drawBall()
+            drawEndPosition()
+            
 
             checkIfEnded()
 
@@ -271,7 +272,8 @@ Your browser does not support the HTML canvas tag.
             game = false
             ctx.fillStyle = "white";
             ctx.font = "70px Arial";
-            ctx.fillText("You won!", WIDTH/2 - 50, HEIGHT/2 - 5);
+            ctx.fillText("You", WIDTH/2 - 50, HEIGHT/2);
+            ctx.fillText(" won!", WIDTH/2 - 70, HEIGHT/2 + 70);
         } else {
             // do nothing
         }
