@@ -111,7 +111,7 @@ Your browser does not support the HTML canvas tag.
     function mainLoop() {
         if(game) {
 
-            moveBall()
+            moveBallWithCollisionDetect()
 
             drawBackground()
             drawBall()
@@ -174,6 +174,82 @@ Your browser does not support the HTML canvas tag.
 
         if(keys.down) {
             ball.y = ball.y + moveBy*UNITH
+        }
+    }
+
+    function moveBallWithCollisionDetect() {
+        let moveBy = 1
+
+        
+        if(keys.left) {
+
+            let canDoIt = true
+            for(let i=0;i<brick.positions.length;i++) {
+                if( (ball.x - moveBy*UNITW < brick.positions[i].x + brick.width && ball.x + ball.width - moveBy*UNITW > brick.positions[i].x) &&
+                    (ball.y + ball.height > brick.positions[i].y && ball.y < brick.positions[i].y + brick.height)) {
+                    canDoIt = false
+                } else {
+                    // do nothing
+                }
+            }
+
+            if(canDoIt) {
+                ball.x = ball.x - moveBy*UNITW
+            }
+            
+        }
+            
+        
+
+        if(keys.right) {
+            
+            let canDoIt = true
+            for(let i=0;i<brick.positions.length;i++) {
+                if( (ball.x + moveBy*UNITW < brick.positions[i].x + brick.width && ball.x + ball.width + moveBy*UNITW > brick.positions[i].x) &&
+                    (ball.y + ball.height > brick.positions[i].y && ball.y < brick.positions[i].y + brick.height)) {
+                    canDoIt = false
+                } else {
+                    // do nothing
+                }
+            }
+
+            if(canDoIt) {
+                ball.x = ball.x + moveBy*UNITW
+            }
+        }
+
+        if(keys.up) {
+
+            let canDoIt = true
+            for(let i=0;i<brick.positions.length;i++) {
+                if( (ball.x < brick.positions[i].x + brick.width && ball.x + ball.width > brick.positions[i].x) &&
+                    (ball.y - moveBy*UNITH + ball.height > brick.positions[i].y && ball.y - moveBy*UNITH < brick.positions[i].y + brick.height)) {
+                    canDoIt = false
+                } else {
+                    // do nothing
+                }
+            }
+
+            if(canDoIt) {
+                ball.y = ball.y - moveBy*UNITH
+            }
+        }
+
+        if(keys.down) {
+
+            let canDoIt = true
+            for(let i=0;i<brick.positions.length;i++) {
+                if( (ball.x < brick.positions[i].x + brick.width && ball.x + ball.width > brick.positions[i].x) &&
+                    (ball.y + moveBy*UNITH + ball.height > brick.positions[i].y && ball.y + moveBy*UNITH < brick.positions[i].y + brick.height)) {
+                    canDoIt = false
+                } else {
+                    // do nothing
+                }
+            }
+
+            if(canDoIt) {
+                ball.y = ball.y + moveBy*UNITH
+            }
         }
     }
 
