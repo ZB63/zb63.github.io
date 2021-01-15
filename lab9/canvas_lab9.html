@@ -41,10 +41,10 @@ Your browser does not support the HTML canvas tag.
     }
 
     ball = {
-        x: WIDTH/2,
-        y: HEIGHT/2,
-        width: 50 * UNITW,
-        height: 50 * UNITH
+        x: UNITW*100,
+        y: UNITH*100,
+        width: 80 * UNITW,
+        height: 80 * UNITH
     }
 
     brick = {
@@ -54,14 +54,14 @@ Your browser does not support the HTML canvas tag.
     }
 
     const labyrinthSchema1 = [[1,1,1,1,1,1,1,1,1,1],
-                              [1,0,0,0,0,0,0,0,0,1],
-                              [1,0,0,0,0,0,0,0,0,1],
-                              [1,0,0,0,0,0,0,0,0,1],
-                              [1,0,0,0,0,0,0,0,0,1],
-                              [1,0,0,0,0,0,0,0,0,1],
-                              [1,0,0,0,0,0,0,0,0,1],
-                              [1,0,0,0,0,0,0,0,0,1],
-                              [1,0,0,0,0,0,0,0,0,1],
+                              [1,0,1,0,1,0,0,1,0,1],
+                              [1,0,1,0,1,1,0,1,0,1],
+                              [1,0,1,0,0,0,0,0,0,1],
+                              [1,0,0,0,1,1,0,1,0,1],
+                              [1,0,1,1,1,1,1,1,0,1],
+                              [1,0,1,1,0,0,0,0,0,1],
+                              [1,0,0,1,1,0,1,1,1,1],
+                              [1,0,1,1,0,0,0,0,0,1],
                               [1,1,1,1,1,1,1,1,1,1]]
 
     window.addEventListener('resize', resizeCanvas, false);
