@@ -191,7 +191,7 @@ Your browser does not support the HTML canvas tag.
         if(Math.random() > 0.5) {
             id = 2
         }
-        
+
         if(id === 1) {
             schema = labyrinthSchema1
         } else if(id === 2) {
@@ -334,7 +334,6 @@ Your browser does not support the HTML canvas tag.
                         if(mobile.verticalOrientation) {
                             if(y < 0) { // turn right
 
-                                y = Math.abs(y)
                                 keys.left = true
                                 keys.right = false
 
@@ -350,7 +349,6 @@ Your browser does not support the HTML canvas tag.
 
                             if(x < 0) { // turn up
 
-                                x = Math.abs(x)
                                 keys.down = false
                                 keys.up = true
 
@@ -366,7 +364,6 @@ Your browser does not support the HTML canvas tag.
                         } else {
                             if(x < 0) { // turn right
 
-                                y = Math.abs(y)
                                 keys.left = true
                                 keys.right = false
 
@@ -382,7 +379,6 @@ Your browser does not support the HTML canvas tag.
 
                             if(y < 0) { // turn down
 
-                                x = Math.abs(x)
                                 keys.down = true
                                 keys.up = false
 
@@ -414,7 +410,6 @@ Your browser does not support the HTML canvas tag.
                 if(mobile.verticalOrientation) {
                     if(y < 0) { // turn right
 
-                        y = Math.abs(y)
                         keys.left = true
                         keys.right = false
 
@@ -430,7 +425,6 @@ Your browser does not support the HTML canvas tag.
 
                     if(x < 0) { // turn up
 
-                        x = Math.abs(x)
                         keys.down = false
                         keys.up = true
 
@@ -444,13 +438,12 @@ Your browser does not support the HTML canvas tag.
                         keys.right = false
                     }
                 } else {
-                    if(x < 0) { // turn right
+                    if(x < 0) { // turn left
 
-                        y = Math.abs(y)
                         keys.left = true
                         keys.right = false
 
-                    } else if (x > 0 ) { // turn left
+                    } else if (x > 0 ) { // turn right
 
                         keys.left = false
                         keys.right = true
@@ -462,7 +455,6 @@ Your browser does not support the HTML canvas tag.
 
                     if(y < 0) { // turn down
 
-                        x = Math.abs(x)
                         keys.down = true
                         keys.up = false
 
