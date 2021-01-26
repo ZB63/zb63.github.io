@@ -1,0 +1,110 @@
+---
+openapi: 3.0.1
+info:
+  title: defaultTitle
+  description: defaultDescription
+  version: "0.1"
+servers:
+- url: https://www.dnd5eapi.co
+paths:
+  /api/skills:
+    get:
+      summary: Skills
+      description: List of all available skills. We can use parameter "name" to filer the skills we are interested in.
+      parameters:
+      - name: name
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: Medicine
+      responses:
+        "200":
+          description: Auto generated using Swagger Inspector
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+      servers:
+      - url: https://www.dnd5eapi.co
+    servers:
+    - url: https://www.dnd5eapi.co
+  /api/classes:
+    get:
+      summary: Classes
+      description: List of all available classes. We can use parameter "name" to filer the classes we are interested in.
+      parameters:
+      - name: name
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: Druid
+      responses:
+        "200":
+          description: Auto generated using Swagger Inspector
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+      servers:
+      - url: https://www.dnd5eapi.co
+    servers:
+    - url: https://www.dnd5eapi.co
+  /api/monsters:
+    get:
+      summary: Monsters
+      description: List of all monsters. We can use parameter "name" to filer the monsters we are interested in.
+      parameters:
+      - name: name
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: Bandit
+      responses:
+        "200":
+          description: Auto generated using Swagger Inspector
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+      servers:
+      - url: https://www.dnd5eapi.co
+    servers:
+    - url: https://www.dnd5eapi.co
+  /api/equipment:
+    get:
+      summary: Equipment
+      description: List of all available equipment. We can use parameter "name" to filer the equipment we are interested in.
+      parameters:
+      - name: name
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: Arrow
+      responses:
+        "200":
+          description: Auto generated using Swagger Inspector
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+      servers:
+      - url: https://www.dnd5eapi.co
+    servers:
+    - url: https://www.dnd5eapi.co
+components: {}
